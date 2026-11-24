@@ -1,11 +1,14 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Prefeitura em Dia</title>
 <meta name="description" content="As contas da sua prefeitura, com fonte e data. Rurópolis e Placas (PA): orçamento, educação, previdência e relatórios fiscais.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<meta name="color-scheme" content="light">
+<script>document.documentElement.classList.add('js')</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
 <style>
 :root{color-scheme:light;--surface-1:#fcfcfb;--page:#f9f9f7;--text-primary:#0b0b0b;--text-secondary:#52514e;--muted:#6b6a65;
 --grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,.10);--series-1:#2a78d6;--series-2:#eb6834;--series-3:#1baf7a;--series-4:#eda100;
@@ -95,123 +98,531 @@ border-radius:8px;padding:8px 10px;font-size:12px;box-shadow:0 4px 16px rgba(0,0
 footer{font-size:13px;color:var(--muted);margin-top:24px}
 footer a{color:var(--text-secondary)}
 
-:root{
-  --tinta:#13315c; --tinta-2:#1f4b86; --papel:#f6f7f9; --folha:#ffffff; --texto:#16202e; --texto-2:#4a5566;
-  --linha:#dfe3ea; --marca:#ffe066; --marca-texto:#3d3200;
-  --ok:#11743c; --ok-bg:#e4f3ea; --atencao:#8a5a00; --atencao-bg:#fff3cd; --pend:#a8321f; --pend-bg:#fbe3de;
-  --diverg:#7a3f99; --diverg-bg:#f1e6f7;
-  --f-titulo:"Archivo","Arial Narrow",Arial,sans-serif; --f-texto:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --tinta:#0d2140; --tinta-2:#9cc0f0; --papel:#0f141b; --folha:#171e28; --texto:#e8edf4; --texto-2:#a9b4c4;
-  --linha:#2a3442; --marca:#f2d04a; --marca-texto:#2b2300;
-  --ok:#6fd39a; --ok-bg:#16301f; --atencao:#f0c25a; --atencao-bg:#3a2e10; --pend:#f29b88; --pend-bg:#3d1f19;
-  --diverg:#d3a6ec; --diverg-bg:#2e1f38; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --tinta:#0d2140; --tinta-2:#9cc0f0; --papel:#0f141b; --folha:#171e28; --texto:#e8edf4; --texto-2:#a9b4c4;
-  --linha:#2a3442; --marca:#f2d04a; --marca-texto:#2b2300;
-  --ok:#6fd39a; --ok-bg:#16301f; --atencao:#f0c25a; --atencao-bg:#3a2e10; --pend:#f29b88; --pend-bg:#3d1f19;
-  --diverg:#d3a6ec; --diverg-bg:#2e1f38; color-scheme:dark}
-body{background:var(--papel);color:var(--texto);font-family:var(--f-texto);font-size:16px;line-height:1.55}
-.topo{background:var(--tinta);color:#fff}
-.topo .dentro{max-width:1080px;margin:0 auto;padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));
-  padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between}
-.marca-site{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:var(--f-titulo);font-weight:800;font-size:20px;letter-spacing:-.01em}
+:root,:root[data-theme="light"]{color-scheme:light;
+  --fundo:#EEF2F7; --card:#FFFFFF; --borda:#D5DCE6; --borda-2:#94A3B8; --marinho:#0F172A; --marinho-2:#1E293B; --texto:#0F172A; --texto-2:#475569; --texto-3:#64748B;
+  --link:#1D4ED8; --sombra:0 1px 2px rgba(15,23,42,.06),0 2px 8px rgba(15,23,42,.05);
+  --ok-bg:#ECFDF5; --ok-tx:#065F46; --ok-bd:#A7F3D0; --ok-pt:#10B981;
+  --at-bg:#FFFBEB; --at-tx:#92400E; --at-bd:#FDE68A; --at-pt:#F59E0B;
+  --pe-bg:#FEF2F2; --pe-tx:#991B1B; --pe-bd:#FECACA; --pe-pt:#EF4444;
+  --di-bg:#EEF2FF; --di-tx:#3730A3; --di-bd:#C7D2FE; --di-pt:#6366F1;
+  --in-bg:#F1F5F9; --in-tx:#334155; --in-bd:#CBD5E1; --in-pt:#94A3B8;
+  --f-ui:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-num:"JetBrains Mono","IBM Plex Mono",ui-monospace,SFMono-Regular,Consolas,monospace;
+  /* variáveis dos gráficos e blocos herdados do painel */
+  --page:var(--fundo); --surface-1:var(--card); --text-primary:var(--texto); --text-secondary:var(--texto-2); --muted:var(--texto-3);
+  --grid:#EEF2F6; --axis:var(--borda-2); --border:var(--borda);
+  --good:#10B981; --warning:#F59E0B; --serious:#6366F1; --critical:#EF4444;
+  --good-bg:var(--ok-bg); --warning-bg:var(--at-bg); --serious-bg:var(--di-bg); --critical-bg:var(--pe-bg); --neutro-bg:var(--in-bg)}
+*{box-sizing:border-box}
+html{scroll-padding-top:120px}
+body{margin:0;background:var(--fundo);color:var(--texto);font-family:var(--f-ui);font-size:16px;line-height:1.6;font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--link)}
+.num{font-family:var(--f-num);font-weight:600;letter-spacing:-.02em}
+.dentro{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--link);outline-offset:2px;border-radius:4px}
+/* navbar */
+.topo{position:sticky;top:0;z-index:20;background:var(--marinho);border-bottom:1px solid rgba(255,255,255,.08)}
+.topo .dentro{min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.marca-site{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:18px;letter-spacing:-.02em}
 .marca-site svg{flex:none}
-.topo nav{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px}
-.topo nav a{color:#dfe8f5;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
-.topo nav a:hover,.topo nav a[aria-current="page"]{color:#fff;border-bottom-color:var(--marca)}
-.topo a:focus-visible,.conteudo a:focus-visible{outline:3px solid var(--marca);outline-offset:2px}
-.conteudo{max-width:1080px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));
-  padding-right:max(16px,env(safe-area-inset-right,0px))}
-.abertura{display:grid;gap:10px;margin-bottom:24px}
-.abertura h1{font-family:var(--f-titulo);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
-.abertura .lead{font-size:18px;color:var(--texto-2);margin:0;max-width:62ch}
-.abertura .data{font-size:14px;color:var(--texto-2);margin:0}
-.grifo{background:linear-gradient(transparent 55%,var(--marca) 55%);padding:0 2px;color:inherit}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .grifo{background:none;color:var(--marca)}}
-:root[data-theme="dark"] .grifo{background:none;color:var(--marca)}
-.cidades{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin:8px 0 28px}
-.cidade{background:var(--folha);border:1px solid var(--linha);border-radius:14px;padding:20px;display:grid;gap:14px;min-width:0}
-.cidade h2{font-family:var(--f-titulo);font-size:26px;margin:0;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.cidade h2 small{font-family:var(--f-texto);font-size:14px;font-weight:400;color:var(--texto-2)}
-.fichas{display:grid;gap:10px;margin:0;padding:0;list-style:none}
-.ficha{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;align-items:start;border-top:1px solid var(--linha);padding-top:10px}
-.ficha .tema{font-weight:600;font-size:14px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.04em;grid-column:1}
-.ficha .situ{grid-column:1}
-.ficha .texto{grid-column:2;grid-row:1 / span 2;min-width:0}
-.ficha .manchete{margin:0;font-weight:600;font-size:16px;line-height:1.35}
-.ficha .detalhe{margin:4px 0 0;font-size:14px;color:var(--texto-2)}
-.chaves{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 16px}
-.chave{background:var(--folha);border:1px solid var(--linha);border-radius:12px;padding:14px 16px;min-width:0}
-.chave .rot{margin:0;font-size:13px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.04em}
-.chave .num{margin:2px 0;font-family:var(--f-titulo);font-weight:800;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.topo nav{display:flex;gap:4px}
+.topo nav a{color:#CBD5E1;text-decoration:none;font-weight:600;font-size:15px;padding:8px 12px;border-radius:8px}
+.topo nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.topo nav a[aria-current="page"]{color:#fff;background:rgba(255,255,255,.14)}
+.menu{display:none;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(255,255,255,.25);border-radius:10px;background:transparent;color:#fff;cursor:pointer}
+@media (max-width:760px){
+  .js .menu{display:inline-flex}
+  .topo .dentro{flex-wrap:wrap}
+  .js .topo nav{display:none;flex-basis:100%;flex-direction:column;padding:4px 0 12px}
+  .js .topo nav.aberto{display:flex}
+  .topo nav{flex-wrap:wrap}
+  .js .topo nav a{padding:12px}
+}
+/* hero */
+.hero{background:var(--marinho);color:#fff;padding:40px 0 36px;margin:0 0 28px;border-bottom:4px solid var(--marinho-2)}
+.selo-topo{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:#E2E8F0;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;padding:5px 12px 5px 10px;margin:0 0 18px}
+.selo-topo i{width:7px;height:7px;border-radius:50%;background:var(--ok-pt);box-shadow:0 0 0 3px rgba(16,185,129,.25)}
+.hero a:focus-visible,.hero button:focus-visible,.topo a:focus-visible,.topo button:focus-visible{outline-color:#93C5FD}
+.hero h1{font-weight:800;font-size:clamp(34px,6vw,60px);line-height:1.04;letter-spacing:-.035em;margin:0 0 14px;text-wrap:balance;max-width:18ch}
+.hero .lead{font-size:clamp(17px,2.2vw,19px);color:#CBD5E1;margin:0 0 22px;max-width:62ch}
+.hero .migalha{font-size:14px;margin:0 0 10px;color:#94A3B8}
+.hero .migalha a{color:#E2E8F0}
+.hero-mun h1{max-width:none}
+.etiquetas{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.etiquetas li{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:4px 10px;font-size:13px;color:#E2E8F0;font-weight:500}
+.filtro{display:none;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px}
+.js .filtro{display:flex}
+.filtro .rot{font-size:13px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em}
+.segmentado{display:inline-flex;gap:2px;padding:3px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:10px;flex-wrap:wrap}
+.segmentado button{font:inherit;font-size:14px;font-weight:600;color:#CBD5E1;background:none;border:0;border-radius:7px;padding:7px 14px;cursor:pointer}
+.segmentado button:hover{color:#fff;background:rgba(255,255,255,.1)}
+.segmentado button[aria-pressed="true"]{background:#fff;color:var(--marinho)}
+/* legenda dos selos */
+.legenda{background:var(--card);border:1px solid var(--borda);border-radius:12px;margin:18px 0 22px;box-shadow:var(--sombra)}
+.legenda summary{list-style:none;cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.legenda summary::-webkit-details-marker{display:none}
+.legenda summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--texto-3);border-bottom:2px solid var(--texto-3);transform:rotate(45deg);margin-top:-4px}
+.legenda[open] summary::after{transform:rotate(-135deg);margin-top:4px}
+.legenda ul{list-style:none;margin:0;padding:0 16px 14px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 20px}
+.legenda li{display:grid;gap:6px;align-content:start;font-size:13.5px;color:var(--texto-2);line-height:1.45}
+@media (max-width:900px){.legenda ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.legenda ul{grid-template-columns:1fr}}
+/* selos */
+.selo{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;line-height:1;border:1px solid;border-radius:999px;padding:5px 10px 5px 8px;white-space:nowrap;justify-self:start}
+.selo i{width:7px;height:7px;border-radius:50%;flex:none}
+.selo.ok{background:var(--ok-bg);color:var(--ok-tx);border-color:var(--ok-bd)} .selo.ok i{background:var(--ok-pt)}
+.selo.atencao{background:var(--at-bg);color:var(--at-tx);border-color:var(--at-bd)} .selo.atencao i{background:var(--at-pt)}
+.selo.pend{background:var(--pe-bg);color:var(--pe-tx);border-color:var(--pe-bd)} .selo.pend i{background:var(--pe-pt)}
+.selo.diverg{background:var(--di-bg);color:var(--di-tx);border-color:var(--di-bd)} .selo.diverg i{background:var(--di-pt)}
+.selo.info{background:var(--in-bg);color:var(--in-tx);border-color:var(--in-bd)} .selo.info i{background:var(--in-pt)}
+/* cartões dos municípios */
+.cidades{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:0 0 8px}
+@media (max-width:900px){.cidades{grid-template-columns:1fr}}
+.cidade{background:var(--card);border:1px solid var(--borda);border-top:4px solid var(--marinho);border-radius:16px;overflow:hidden;box-shadow:var(--sombra);display:flex;flex-direction:column;min-width:0}
+.cidade[hidden]{display:none}
+.cab-cidade{padding:18px 20px 16px;border-bottom:1px solid var(--borda);display:grid;gap:10px;background:#F8FAFC}
+.cab-cidade h2{margin:0;font-size:26px;font-weight:800;letter-spacing:-.03em;display:flex;align-items:center;gap:10px;line-height:1.1}
+.cab-cidade .meta{margin:0;font-size:14px;color:var(--texto-2);font-weight:500}
+.placar{display:flex;flex-wrap:wrap;gap:6px}
+.pilares{display:grid;grid-template-columns:1fr;margin:0;padding:0;list-style:none}
+.pilar{padding:16px 20px;border-bottom:1px solid var(--borda);display:grid;gap:10px;min-width:0}
+.pilar .cab{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pilar h3{margin:0;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--texto-2);display:flex;align-items:center;gap:8px}
+.pilar h3 svg{color:var(--texto);flex:none}
+.pilar .manchete{margin:0;font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.015em;text-wrap:pretty}
+.pilar .fonte-mini{margin:0;font-size:12px;color:var(--texto-3)}
+.pilar details.mais summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--link);list-style:none;display:inline-flex;align-items:center;gap:4px}
+.pilar details.mais summary::-webkit-details-marker{display:none}
+.pilar details.mais summary::after{content:"+";font-weight:700}
+.pilar details.mais[open] summary::after{content:"−"}
+.pilar details.mais p{margin:8px 0 6px;font-size:14px;color:var(--texto-2)}
+.pilar details.mais a{font-size:13.5px;font-weight:600;text-decoration:none}
+.rodape-cidade{padding:16px 20px 20px;margin-top:auto}
+.botao{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;background:var(--texto);color:#fff;text-decoration:none;font-weight:700;
+  font-size:15px;padding:13px 18px;border-radius:10px}
+.botao:hover{background:#1E293B}
+/* grade de pilares na página do município */
+.grade-pilares{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:0 0 8px;padding:0;list-style:none}
+@media (max-width:760px){.grade-pilares{grid-template-columns:1fr}}
+.grade-pilares .pilar{background:var(--card);border:1px solid var(--borda);border-top:3px solid var(--marinho);border-radius:14px;box-shadow:var(--sombra)}
+/* micro-visualizações */
+.progresso{display:grid;gap:6px}
+.progresso .trilho{height:8px;background:#E2E8F0;border-radius:999px;overflow:hidden}
+.progresso .cheio{height:100%;background:var(--texto);border-radius:999px}
+.progresso .rotulos{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--texto-2);flex-wrap:wrap}
+.segmentos{display:flex;height:10px;border-radius:999px;overflow:hidden;gap:2px;background:var(--card)}
+.segmentos span{display:block;height:100%}
+.segmentos .s-ok{background:var(--ok-pt)} .segmentos .s-at{background:var(--at-pt)} .segmentos .s-pe{background:var(--pe-pt)}
+.contagens{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--texto-2);margin:6px 0 0;padding:0;list-style:none}
+.contagens li{display:inline-flex;align-items:center;gap:6px}
+.contagens i{width:8px;height:8px;border-radius:2px;display:inline-block}
+.fontes-lado{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.fonte-valor{border:1px solid var(--borda);border-radius:10px;padding:8px 10px;display:grid;gap:2px;background:var(--fundo)}
+.fonte-valor .quem{font-size:12px;color:var(--texto-3);font-weight:600}
+.fonte-valor .num{font-size:18px}
+.fonte-valor .res{font-size:12px;font-weight:600}
+.fonte-valor.cumpre{border-color:var(--ok-bd);background:var(--ok-bg)} .fonte-valor.cumpre .res{color:var(--ok-tx)}
+.fonte-valor.abaixo{border-color:var(--pe-bd);background:var(--pe-bg)} .fonte-valor.abaixo .res{color:var(--pe-tx)}
+.ind-titulo{margin:0;font-size:13px;font-weight:600;color:var(--texto-2)}
+.linha-ind{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-size:13.5px;color:var(--texto-2);border-top:1px dashed var(--borda);padding-top:8px}
+.linha-ind b{color:var(--texto);font-weight:600}
+.pares{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0;padding:0;list-style:none;font-size:13.5px;color:var(--texto-2)}
+.pares .num{color:var(--texto);font-size:15px}
+/* números-chave */
+.chaves{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 20px}
+.chave{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:14px 16px;min-width:0;box-shadow:var(--sombra)}
+.chave .rot{margin:0;font-size:12px;color:var(--texto-3);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.chave .num{display:block;margin:6px 0 2px;font-size:26px;line-height:1.1;color:var(--texto)}
+.hero .chaves{margin:6px 0 0}
+.chave{color:var(--texto)}
 .chave .nota{margin:0;font-size:13px;color:var(--texto-2)}
-.chave.destaque{border-color:var(--atencao);background:var(--atencao-bg)}
-/* o conteúdo herdado do painel passa a usar as cores e os títulos do site */
-:root,:root[data-theme="light"],:root[data-theme="dark"]{--page:var(--papel);--surface-1:var(--folha);--text-primary:var(--texto);
-  --text-secondary:var(--texto-2);--muted:var(--texto-2);--grid:var(--linha);--border:var(--linha)}
-.conteudo .card{border-radius:14px;padding:22px}
-.conteudo .card h2{font-family:var(--f-titulo);font-weight:800;font-size:24px;letter-spacing:-.01em;text-wrap:balance}
-.conteudo .card h3,.conteudo .card h4{font-family:var(--f-titulo)}
-.carimbo{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1.5px solid currentColor;border-radius:6px;padding:1px 7px;white-space:nowrap}
-.carimbo.ok{color:var(--ok);background:var(--ok-bg)}
-.carimbo.atencao{color:var(--atencao);background:var(--atencao-bg)}
-.carimbo.pend{color:var(--pend);background:var(--pend-bg)}
-.carimbo.diverg{color:var(--diverg);background:var(--diverg-bg)}
-.carimbo.info{color:var(--texto-2);background:var(--papel)}
-.botao{justify-self:start;display:inline-block;background:var(--tinta-2);color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:8px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .botao{color:#0f141b}}
-:root[data-theme="dark"] .botao{color:#0f141b}
-.como{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:8px 0 24px}
-.como div{border-left:3px solid var(--marca);padding:2px 0 2px 12px}
-.como h3{font-family:var(--f-titulo);font-size:17px;margin:0 0 4px}
-.como p{margin:0;font-size:15px;color:var(--texto-2)}
-.secao-titulo{font-family:var(--f-titulo);font-size:22px;margin:32px 0 4px}
-.migalha{font-size:14px;color:var(--texto-2);margin:0 0 6px}
-.migalha a{color:var(--texto-2)}
-.rodape{border-top:1px solid var(--linha);margin-top:40px;padding-top:16px;font-size:14px;color:var(--texto-2);display:grid;gap:6px}
-.rodape a{color:var(--texto-2)}
-.metodo{max-width:72ch}
-.metodo h2{font-family:var(--f-titulo);font-size:22px;margin:28px 0 6px}
+.chave.destaque{border-color:var(--at-bd);background:var(--at-bg)}
+/* seções */
+main.conteudo{max-width:none;margin:0;padding:0 0 48px}
+.secao-titulo{font-size:clamp(24px,3.4vw,30px);font-weight:800;letter-spacing:-.03em;margin:44px 0 4px}
+.secao-sub{margin:0 0 16px;color:var(--texto-2);max-width:70ch}
+/* abas */
+.abas{margin:24px 0 0}
+.lista-abas{display:none}
+.abas.js>.lista-abas{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin;padding:4px;background:var(--card);border:1px solid var(--borda);border-radius:12px;margin:0 0 16px}
+.abas.fixa.js>.lista-abas{position:sticky;top:68px;z-index:5;box-shadow:0 4px 14px rgba(15,23,42,.06)}
+.lista-abas button{font:inherit;font-weight:600;font-size:14.5px;color:var(--texto-2);background:none;border:0;border-radius:9px;padding:8px 14px;cursor:pointer;
+  white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.lista-abas button:hover{background:var(--fundo);color:var(--texto)}
+.lista-abas button[aria-selected="true"]{background:var(--texto);color:#fff}
+.lista-abas .ponto{width:7px;height:7px;border-radius:50%;flex:none}
+.lista-abas .ponto.ok{background:var(--ok-pt)} .lista-abas .ponto.atencao{background:var(--at-pt)}
+.lista-abas .ponto.pend{background:var(--pe-pt)} .lista-abas .ponto.diverg{background:var(--di-pt)} .lista-abas .ponto.info{background:var(--in-pt)}
+.abas.mini{margin:0}
+.abas.mini.js>.lista-abas{display:inline-flex;padding:3px;margin:4px 0 12px;background:var(--fundo)}
+.abas.mini .lista-abas button{font-size:13.5px;padding:6px 12px}
+.painel-aba>.titulo-aba{display:none}
+.abas:not(.js) .painel-aba>.titulo-aba{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;margin:28px 0 8px}
+/* blocos herdados do painel */
+.conteudo .card{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:22px;box-shadow:var(--sombra);margin:0 0 16px}
+.conteudo .card h2{font-weight:800;font-size:22px;letter-spacing:-.025em;text-wrap:balance}
+.conteudo .card h3,.conteudo .card h4{font-weight:700;letter-spacing:-.01em}
+.conteudo .card .sub{max-width:80ch}
+.grande{font-family:var(--f-num);font-weight:600;letter-spacing:-.02em}
+td.n,th.n{font-family:var(--f-num);font-size:12.5px}
+svg.chart{max-height:360px}
+.chart text{font-family:var(--f-num)}
+.rotulo-barra{fill:var(--texto);font-size:12px;font-weight:600}
+details.ver-tabela{margin:8px 0 4px}
+details.ver-tabela>summary,.card details>summary{font-weight:600;color:var(--link)}
+.chip{font-weight:600}
+/* barras horizontais */
+.hbarras{display:grid;gap:6px;margin:8px 0}
+.hb{display:grid;grid-template-columns:minmax(110px,190px) 1fr auto;gap:10px;align-items:center;border-radius:8px;padding:3px 6px;font-size:14px}
+.hb:hover,.hb:focus-visible{background:var(--fundo)}
+.hb .nome{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .trilho{height:12px;position:relative}
+.hb .barra{position:absolute;left:0;top:0;bottom:0;background:var(--series-1);border-radius:0 4px 4px 0;min-width:2px}
+.hb.realce .nome{font-weight:700}
+.hb.realce .barra{background:var(--series-2)}
+.hb .valor{color:var(--texto-2);white-space:nowrap;font-size:13px;font-family:var(--f-num)}
+.hb .valor b{color:var(--texto);font-weight:600}
+@media (max-width:560px){.hb{grid-template-columns:1fr auto}.hb .trilho{grid-column:1 / -1;grid-row:2}}
+/* matriz ano a ano */
+.matriz{border-collapse:separate;border-spacing:6px;width:100%;margin:4px -6px 8px;font-size:14px}
+.matriz th{font-weight:600;color:var(--texto-2);text-align:left;padding:0 4px}
+.matriz td{padding:0}
+.celula{display:flex;flex-direction:column;gap:2px;border-radius:10px;padding:8px 10px;min-width:96px;border:1px solid transparent;height:100%}
+.celula b{font-size:14px;display:flex;align-items:center;gap:5px}
+.celula span{font-size:12px;color:var(--texto-2);font-family:var(--f-num)}
+.celula.good{background:var(--ok-bg);border-color:var(--ok-bd);color:var(--ok-tx)} .celula.warning{background:var(--at-bg);border-color:var(--at-bd);color:var(--at-tx)}
+.celula.serious{background:var(--di-bg);border-color:var(--di-bd);color:var(--di-tx)} .celula.critical{background:var(--pe-bg);border-color:var(--pe-bd);color:var(--pe-tx)}
+.celula.neutro{background:var(--in-bg);border-color:var(--in-bd);color:var(--in-tx)}
+.legenda-status{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--texto-2);margin:4px 0 8px}
+.legenda-status>span{display:inline-flex;align-items:center;gap:6px}
+.legenda-status i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.multiplos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:8px 28px}
+.multiplos h3{margin:8px 0 0;display:flex;align-items:center;gap:8px}
+/* rodapé */
+.rodape{background:var(--card);border-top:1px solid var(--borda);margin-top:56px;padding:36px 0 28px;font-size:14px;color:var(--texto-2)}
+.rodape .colunas{display:grid;grid-template-columns:1.3fr 1fr;gap:28px}
+@media (max-width:760px){.rodape .colunas{grid-template-columns:1fr}}
+.rodape h2{font-size:15px;font-weight:700;color:var(--texto);margin:0 0 8px;letter-spacing:-.01em}
+.rodape p{margin:0 0 8px}
+.rodape ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px}
+@media (max-width:420px){.rodape ul{grid-template-columns:1fr}}
+.rodape ul a{color:var(--texto-2);text-decoration:none;font-weight:500}
+.rodape ul a:hover{color:var(--link);text-decoration:underline}
+.rodape .base{border-top:1px solid var(--borda);margin-top:24px;padding-top:16px;font-size:13px;color:var(--texto-3);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.rodape .base a{color:var(--texto-2)}
+/* metodologia */
+.metodo{max-width:80ch}
+.metodo .bloco{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:6px 22px 20px;margin:0 0 16px}
+.metodo h2{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:22px 0 6px}
 .metodo dl{display:grid;gap:10px;margin:0}
-.metodo dt{font-weight:600}
-.metodo dd{margin:0 0 4px;color:var(--texto-2)}
+.metodo dl div{display:block;border:0;padding:0}
+.metodo dt{font-weight:700;color:var(--texto)}
+.metodo dd{margin:0 0 4px;color:var(--texto-2);font-weight:400}
 .metodo table{border-collapse:collapse;width:100%;font-size:15px}
-.metodo th,.metodo td{text-align:left;border-bottom:1px solid var(--linha);padding:8px 8px 8px 0;vertical-align:top}
-.indice-pagina{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px;margin:4px 0 8px}
-.indice-pagina a{color:var(--tinta-2)}
-@media (max-width:520px){.ficha{grid-template-columns:1fr}.ficha .texto{grid-column:1;grid-row:auto}}
-@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.metodo th,.metodo td{text-align:left;border-bottom:1px solid var(--borda);padding:8px 8px 8px 0;vertical-align:top}
+
+/* ---------- camada de portal: faixas, textura, panorama ---------- */
+:root{--fundo:#E9EEF5;--acento:#2563EB;--acento-claro:#7DD3FC}
+.hero{position:relative;overflow:hidden;padding:56px 0 64px;border-bottom:0;margin:0;
+  background-color:#0B1222;
+  background-image:radial-gradient(900px 420px at 85% -10%,rgba(56,189,248,.22),transparent 60%),
+    radial-gradient(700px 380px at -10% 110%,rgba(99,102,241,.22),transparent 60%),
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:auto,auto,36px 36px,36px 36px}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(125,211,252,.5),transparent)}
+.hero .dentro{position:relative;z-index:1}
+.topo{background:#0B1222}
+.hero h1 .destaque{background:linear-gradient(90deg,#7DD3FC,#A5B4FC);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-grade{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:center}
+@media (max-width:900px){.hero-grade{grid-template-columns:1fr;gap:32px}}
+.panorama{background:rgba(15,23,42,.55);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:20px;
+  box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter:blur(8px)}
+.panorama .pan-cab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0 0 14px}
+.panorama .pan-cab b{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#E2E8F0}
+.panorama .pan-cab span{font-size:12px;color:#94A3B8}
+.pan-mun{display:grid;gap:10px}
+.pan-mun[hidden]{display:none}
+.pan-mun+.pan-mun{margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)}
+.pan-mun h3{margin:0;font-size:17px;font-weight:700;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pan-mun h3 a{color:#fff;text-decoration:none}
+.pan-mun h3 a:hover{text-decoration:underline}
+.pan-mun h3 small{font-size:12px;font-weight:500;color:#94A3B8}
+.pan-itens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+.pan-itens li{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 12px;display:grid;gap:7px}
+.pan-itens li a{display:contents;color:inherit;text-decoration:none}
+.pan-itens .p-nome{font-size:12.5px;font-weight:600;color:#CBD5E1;display:flex;align-items:center;gap:6px}
+.pan-itens .p-nome svg{color:#7DD3FC}
+.pan-itens li:hover{background:rgba(255,255,255,.09)}
+/* faixas */
+.banda{padding:56px 0}
+.banda-tinta{background:var(--fundo)}
+.banda-branca{background:#fff;border-block:1px solid var(--borda)}
+.banda-branca .conteudo .card,.banda-branca .card{background:#F8FAFC}
+.banda-escura{color:#fff;background-color:#0F172A;
+  background-image:radial-gradient(800px 360px at 100% 0%,rgba(56,189,248,.16),transparent 60%),
+    linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:auto,36px 36px,36px 36px}
+.sobre-titulo{margin:0 0 6px;font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--acento)}
+.banda-escura .sobre-titulo{color:var(--acento-claro)}
+.banda .secao-titulo{margin:0 0 6px}
+.banda-escura .secao-titulo{color:#fff}
+.banda-escura .secao-sub{color:#CBD5E1}
+/* números do monitor */
+.numeros{background:#fff;border-bottom:1px solid var(--borda)}
+.numeros ul{list-style:none;margin:0;padding:22px 0 10px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.numeros li{padding:4px 20px;border-left:1px solid var(--borda);display:grid;gap:2px}
+.numeros li:first-child{border-left:0;padding-left:0}
+.numeros .num{font-size:clamp(26px,3.4vw,36px);line-height:1.1;color:var(--texto)}
+.numeros .rot{font-size:13.5px;color:var(--texto-2);font-weight:500}
+.numeros .fonte-num{margin:0;padding:0 0 18px;font-size:12px;color:var(--texto-3)}
+@media (max-width:760px){.numeros ul{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}
+  .numeros li:nth-child(3){border-left:0;padding-left:0}}
+/* cabeçalho dos cartões de município */
+.cidade{border-top:0;box-shadow:0 1px 2px rgba(15,23,42,.06),0 12px 32px rgba(15,23,42,.08)}
+.cab-cidade{color:#fff;border-bottom:0;padding:22px 20px 18px;
+  background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 100%)}
+.cab-cidade h2{color:#fff}
+.cab-cidade h2 svg{color:var(--acento-claro)}
+.cab-cidade .meta{color:#CBD5E1}
+.legenda{border-color:var(--borda)}
+/* como funciona */
+.passos{list-style:none;margin:24px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:passo}
+@media (max-width:900px){.passos{grid-template-columns:1fr}}
+.passos li{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:20px;counter-increment:passo}
+.passos li::before{content:"0" counter(passo);display:block;font-family:var(--f-num);font-weight:600;color:var(--acento-claro);font-size:14px;margin-bottom:10px}
+.passos h3{margin:0 0 6px;font-size:18px;font-weight:700;color:#fff;letter-spacing:-.01em}
+.passos p{margin:0;font-size:14.5px;color:#CBD5E1}
+.banda-escura a.ir{display:inline-flex;align-items:center;gap:8px;margin-top:22px;color:#fff;font-weight:700;text-decoration:none;
+  border:1px solid rgba(255,255,255,.3);border-radius:10px;padding:11px 16px}
+.banda-escura a.ir:hover{background:rgba(255,255,255,.08)}
+/* rodapé escuro */
+.rodape{background:#0B1222;border-top:1px solid rgba(255,255,255,.08);margin-top:0;color:#94A3B8}
+.rodape h2{color:#fff}
+.rodape a,.rodape ul a{color:#CBD5E1}
+.rodape ul a:hover{color:#fff}
+.rodape .base{border-top-color:rgba(255,255,255,.1);color:#94A3B8}
+.rodape .base .num{color:#E2E8F0}
+/* páginas internas sobre fundo tingido */
+.hero+.dentro{padding-top:28px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
-<body><header class="topo"><div class="dentro"><a class="marca-site" href="index.html"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="3" y="5" width="24" height="22" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M3 11h24" stroke="#fff" stroke-width="2"/><path d="M9 3v5M21 3v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M9.5 18.5l3.5 3.5 7.5-7.5" fill="none" stroke="#ffe066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Prefeitura em Dia</a><nav aria-label="Páginas"><a href="index.html" aria-current="page">Início</a><a href="ruropolis.html">Rurópolis</a><a href="placas.html">Placas</a><a href="metodologia.html">Como funciona</a></nav></div></header>
+<body><header class="topo"><div class="dentro"><a class="marca-site" href="index.html"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="#FFFFFF"/><path d="M7 19.5h14M8.5 17V12M12.5 17V9.5M16.5 17V11M20.5 17V7.5" stroke="#0F172A" stroke-width="2" stroke-linecap="round"/></svg>Prefeitura em Dia</a><button class="menu" type="button" aria-expanded="false" aria-controls="nav-principal" aria-label="Abrir menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></button><nav id="nav-principal" aria-label="Páginas"><a href="index.html" aria-current="page">Início</a><a href="ruropolis.html">Rurópolis</a><a href="placas.html">Placas</a><a href="metodologia.html">Como funciona</a></nav></div></header>
 <main class="conteudo">
-  <section class="abertura">
-    <h1>A sua prefeitura está <span class="grifo">em dia</span>?</h1>
-    <p class="lead">O Prefeitura em Dia acompanha, com dados oficiais, se o município aplica o mínimo exigido na educação, cuida da previdência dos servidores, entrega os relatórios fiscais no prazo e como usa o orçamento.</p>
-    <p class="data">Municípios acompanhados nesta fase: Rurópolis, Placas (PA). Última coleta: 24/11/2026.</p>
-  </section>
-  <div class="cidades">
-  <article class="cidade">
-    <h2>Rurópolis <small>Pará · regime próprio de previdência</small></h2>
-    <ul class="fichas"><li class="ficha"><span class="tema">Orçamento</span><span class="situ"><span class="carimbo atencao">atenção</span></span><div class="texto"><p class="manchete">R$ 207,9 mi aprovados para 2026; 35,1% já comprometidos até 30/04</p><p class="detalhe">Em 04/11/2026, a Lei nº 523/2026 autorizou mais R$ 68,9 mi (33,2% do orçamento aprovado), que ainda não aparecem nos relatórios entregues. Em 2025, o limite para o prefeito mudar o orçamento sem nova lei subiu de 30% para 65,98%, por 2 leis aprovadas durante o ano.</p></div></li><li class="ficha"><span class="tema">Educação</span><span class="situ"><span class="carimbo diverg">fontes divergem</span></span><div class="texto"><p class="manchete">Mínimo de 25% no ensino em 2025: as fontes oficiais não batem</p><p class="detalhe">Em 2025: Mínimo de 25% no ensino: as fontes oficiais não batem (SIOPE: 27,71%; relatório da Prefeitura: 21,52%). Mínimo de 70% do FUNDEB para os profissionais: cumprido (71,49% a 84,98%).</p></div></li><li class="ficha"><span class="tema">Previdência</span><span class="situ"><span class="carimbo pend">pendência</span></span><div class="texto"><p class="manchete">Certificado de regularidade vencido desde 15/01/2013</p><p class="detalhe">Previdência própria dos servidores. 6 acordos para parcelar dívidas com a previdência, sem nenhuma parcela paga registrada no Ministério.</p></div></li><li class="ficha"><span class="tema">Relatórios</span><span class="situ"><span class="carimbo pend">pendência</span></span><div class="texto"><p class="manchete">9 relatórios fiscais ainda não entregues</p><p class="detalhe">Desde 2021, de 103 relatórios fiscais com prazo vencido: 38 entregues no prazo, 56 com atraso e 9 ainda não entregues.</p></div></li></ul>
-    <a class="botao" href="ruropolis.html">Ver tudo sobre Rurópolis</a>
-  </article>
-  <article class="cidade">
-    <h2>Placas <small>Pará · servidores no INSS</small></h2>
-    <ul class="fichas"><li class="ficha"><span class="tema">Orçamento</span><span class="situ"><span class="carimbo atencao">atenção</span></span><div class="texto"><p class="manchete">R$ 205,2 mi aprovados para 2026; 68,6% já comprometidos até 31/08</p><p class="detalhe">Em 2024, o orçamento cresceu 54,1% durante o ano, acima do limite de 30% da lei orçamentária; não foi localizada lei que autorize a diferença.</p></div></li><li class="ficha"><span class="tema">Educação</span><span class="situ"><span class="carimbo diverg">fontes divergem</span></span><div class="texto"><p class="manchete">Mínimo de 25% no ensino em 2025: as fontes oficiais não batem</p><p class="detalhe">Em 2025: Mínimo de 25% no ensino: as fontes oficiais não batem (SIOPE: 25,35%; Tesouro: 24,50%). Mínimo de 70% do FUNDEB para os profissionais: cumprido (71,51% a 72,00%).</p></div></li><li class="ficha"><span class="tema">Previdência</span><span class="situ"><span class="carimbo atencao">atenção</span></span><div class="texto"><p class="manchete">Certificado de regularidade válido até 13/12/2026 (decisão judicial)</p><p class="detalhe">Servidores no INSS, sem previdência própria. O certificado é exigido para o município receber transferências voluntárias da União.</p></div></li><li class="ficha"><span class="tema">Relatórios</span><span class="situ"><span class="carimbo atencao">atrasos</span></span><div class="texto"><p class="manchete">76 de 99 relatórios entregues com atraso</p><p class="detalhe">Desde 2021, de 99 relatórios fiscais com prazo vencido: 23 entregues no prazo, 76 com atraso e 0 ainda não entregues.</p></div></li></ul>
-    <a class="botao" href="placas.html">Ver tudo sobre Placas</a>
-  </article></div>
-  <h2 class="secao-titulo">Como ler</h2>
-  <div class="como">
-    <div><h3>Em dia</h3><p>As fontes oficiais mostram a obrigação cumprida.</p></div>
-    <div><h3>Fontes divergem</h3><p>O município declarou números diferentes a órgãos diferentes, e eles levam a conclusões opostas. O site mostra os dois, sem escolher um.</p></div>
-    <div><h3>Atenção</h3><p>Algo pede conferência: atrasos, mudanças grandes no orçamento ou certificado obtido na Justiça.</p></div>
-    <div><h3>Pendência</h3><p>Obrigação não cumprida ou documento não entregue, segundo a fonte oficial.</p></div>
+<section class="hero"><div class="dentro hero-grade">
+  <div>
+    <p class="selo-topo"><i aria-hidden="true"></i>Dados públicos oficiais · Última coleta: <span class="num">24/11/2026</span></p>
+    <h1>A sua prefeitura está <span class="destaque">em dia</span>?</h1>
+    <p class="lead">Um observatório independente que acompanha, com dados oficiais, quatro pilares da gestão municipal: a aplicação mínima em educação,
+    a regularidade da previdência, a entrega dos relatórios fiscais e o uso do orçamento.</p>
+    <div class="filtro" role="group" aria-label="Mostrar municípios"><span class="rot">Município</span>
+      <div class="segmentado"><button type="button" data-filtro="todos" aria-pressed="true">Todos</button><button type="button" data-filtro="ruropolis" aria-pressed="false">Rurópolis</button><button type="button" data-filtro="placas" aria-pressed="false">Placas</button></div></div>
   </div>
-  <footer class="rodape"><p style="margin:0">Prefeitura em Dia. Dados públicos oficiais, coletados de forma automática; última coleta em 24/11/2026. Nenhum valor é estimado.</p><p style="margin:0">Fontes: <a href="https://apidatalake.tesouro.gov.br/docs/siconfi/">SICONFI (Tesouro Nacional)</a> · <a href="https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/53">SIOPE (FNDE)</a> · <a href="https://cadprev.previdencia.gov.br/">CADPREV</a> · <a href="https://www.gov.br/previdencia/pt-br/assuntos/rpps/estatisticas-e-informacoes-dos-rpps-1/estatisticas-e-informacoes-dos-rpps">Ministério da Previdência</a> · <a href="https://www.diariomunicipal.com.br/famep/">Diário Oficial dos Municípios do Pará</a> · portais das Prefeituras. <a href="metodologia.html">Como funciona</a>.</p></footer>
+  <aside class="panorama" aria-label="Panorama dos municípios"><div class="pan-cab"><b>Panorama</b><span>coleta de <span class="num">24/11/2026</span></span></div><div class="pan-mun" data-muni="ruropolis"><h3><a href="ruropolis.html">Rurópolis</a><small>PA · RPPS</small></h3><ul class="pan-itens"><li><a href="ruropolis.html#aba-orcamento"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Orçamento</span><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></a></li><li><a href="ruropolis.html#aba-educacao"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Educação</span><span class="selo diverg"><i aria-hidden="true"></i>Fontes divergem</span></a></li><li><a href="ruropolis.html#aba-previdencia"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Previdência</span><span class="selo pend"><i aria-hidden="true"></i>Pendência</span></a></li><li><a href="ruropolis.html#aba-relatorios"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Relatórios</span><span class="selo pend"><i aria-hidden="true"></i>Pendência</span></a></li></ul></div><div class="pan-mun" data-muni="placas"><h3><a href="placas.html">Placas</a><small>PA · INSS</small></h3><ul class="pan-itens"><li><a href="placas.html#aba-orcamento"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Orçamento</span><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></a></li><li><a href="placas.html#aba-educacao"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Educação</span><span class="selo diverg"><i aria-hidden="true"></i>Fontes divergem</span></a></li><li><a href="placas.html#aba-previdencia"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Previdência</span><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></a></li><li><a href="placas.html#aba-relatorios"><span class="p-nome"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Relatórios</span><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></a></li></ul></div></aside>
+</div></section>
+<section class="numeros" aria-label="Números do monitor"><div class="dentro"><ul><li><span class="num">2</span><span class="rot">municípios acompanhados no Pará</span></li><li><span class="num">202</span><span class="rot">relatórios fiscais com prazo vencido conferidos</span></li><li><span class="num">9</span><span class="rot">relatórios ainda não entregues</span></li><li><span class="num">23</span><span class="rot">indicadores com divergência entre as fontes oficiais</span></li></ul><p class="fonte-num">Exercícios de 2021 a 2026. Extrato de entregas do SICONFI, SIOPE e conferência automática entre SIOPE, SICONFI e relatórios das Prefeituras. Coleta em 24/11/2026.</p></div></section>
+<section class="banda banda-tinta" id="municipios"><div class="dentro">
+  <p class="sobre-titulo">Painel dos municípios</p>
+  <h2 class="secao-titulo">Situação de cada prefeitura</h2>
+  <p class="secao-sub">Os quatro pilares de cada município, com o selo da situação, o número que a sustenta e a fonte oficial.</p>
+  <details class="legenda" open><summary>Como ler os selos</summary><ul><li><span class="selo ok"><i aria-hidden="true"></i>Em dia</span><span>As fontes oficiais mostram a obrigação cumprida.</span></li><li><span class="selo diverg"><i aria-hidden="true"></i>Fontes divergem</span><span>O município declarou números diferentes a órgãos diferentes, com conclusões opostas. Mostramos os dois, sem escolher.</span></li><li><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span><span>Algo pede conferência: atrasos, mudanças grandes no orçamento ou certificado obtido na Justiça.</span></li><li><span class="selo pend"><i aria-hidden="true"></i>Pendência</span><span>Obrigação não cumprida ou documento não entregue, segundo a fonte oficial.</span></li></ul></details>
+  <div class="cidades">
+  <article class="cidade" data-muni="ruropolis" aria-labelledby="cid-1506195">
+    <header class="cab-cidade">
+      <h2 id="cid-1506195"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Rurópolis</h2>
+      <p class="meta">PA · Regime Próprio de Previdência</p>
+      <div class="placar" aria-label="Resumo dos quatro pilares"><span class="selo pend"><i aria-hidden="true"></i>2 pendências</span><span class="selo diverg"><i aria-hidden="true"></i>1 divergência</span><span class="selo atencao"><i aria-hidden="true"></i>1 atenção</span></div>
+    </header>
+    <ul class="pilares"><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Orçamento</h3><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></div><p class="manchete">R$ 207,9 mi aprovados para 2026; 35,1% já comprometidos até 30/04</p><div class="progresso" role="img" aria-label="35,1% do orçamento atualizado comprometido até 30/04/2026"><div class="trilho"><div class="cheio" style="width:35.1%"></div></div><div class="rotulos"><span><span class="num">35,1%</span> comprometido até 30/04/2026</span><span><span class="num">R$ 74,6 mi</span> de <span class="num">R$ 212,3 mi</span></span></div></div><p class="fonte-mini">RREO 2º bim./2026, SICONFI. Coleta em 24/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Em 04/11/2026, a Lei nº 523/2026 autorizou mais R$ 68,9 mi (33,2% do orçamento aprovado), que ainda não aparecem nos relatórios entregues. Em 2025, o limite para o prefeito mudar o orçamento sem nova lei subiu de 30% para 65,98%, por 2 leis aprovadas durante o ano.</p><a href="ruropolis.html#aba-orcamento">Abrir orçamento no painel completo →</a></details></li><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Educação</h3><span class="selo diverg"><i aria-hidden="true"></i>Fontes divergem</span></div><p class="manchete">Mínimo de 25% no ensino em 2025: as fontes oficiais não batem</p><p class="ind-titulo">Mínimo de 25% no ensino: quanto cada fonte declarou para 2025 (mínimo de 25%)</p><div class="fontes-lado"><div class="fonte-valor cumpre"><span class="quem">SIOPE</span><span class="num">27,71%</span><span class="res">✓ acima do mínimo</span></div><div class="fonte-valor abaixo"><span class="quem">Prefeitura</span><span class="num">21,52%</span><span class="res">✕ abaixo do mínimo</span></div></div><div class="linha-ind"><span><b>FUNDEB: 70% para os profissionais</b>: cumprido</span><span>SIOPE <span class="num">71,49%</span> · Prefeitura <span class="num">84,98%</span></span></div><p class="fonte-mini">Exercício 2025, ano fechado. SIOPE (FNDE), RREO Anexo 14 (SICONFI) e RREO publicado pela Prefeitura. Coleta em 18/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Em 2025: Mínimo de 25% no ensino: as fontes oficiais não batem (SIOPE: 27,71%; relatório da Prefeitura: 21,52%). Mínimo de 70% do FUNDEB para os profissionais: cumprido (71,49% a 84,98%).</p><a href="ruropolis.html#aba-educacao">Abrir educação no painel completo →</a></details></li><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Previdência</h3><span class="selo pend"><i aria-hidden="true"></i>Pendência</span></div><p class="manchete">Certificado de regularidade vencido desde 15/01/2013</p><ul class="pares"><li>Emitido em <span class="num">19/07/2012</span></li><li>Tipo: administrativo</li><li><span class="num">6</span> acordos de parcelamento</li><li><span class="num">0</span> parcelas pagas registradas</li><li><span class="num">252</span> vencidas sem pagamento</li></ul><p class="fonte-mini">Ministério da Previdência (CRP, referência 06/11/2026) e CADPREV. Coleta em 24/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Previdência própria dos servidores. 6 acordos para parcelar dívidas com a previdência, sem nenhuma parcela paga registrada no Ministério.</p><a href="ruropolis.html#aba-previdencia">Abrir previdência no painel completo →</a></details></li><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Relatórios</h3><span class="selo pend"><i aria-hidden="true"></i>Pendência</span></div><p class="manchete">9 relatórios fiscais ainda não entregues</p><div class="segmentos" role="img" aria-label="103 relatórios: 38 no prazo, 56 com atraso, 9 não entregues"><span class="s-ok" style="width:36.89%" title="no prazo: 38"></span><span class="s-at" style="width:54.37%" title="com atraso: 56"></span><span class="s-pe" style="width:8.74%" title="não entregue: 9"></span></div><ul class="contagens"><li><i style="background:var(--ok-pt)"></i>no prazo <span class="num">38</span></li><li><i style="background:var(--at-pt)"></i>com atraso <span class="num">56</span></li><li><i style="background:var(--pe-pt)"></i>não entregue <span class="num">9</span></li></ul><p class="fonte-mini">RREO, RGF, DCA e SIOPE com prazo vencido, 2021 a 2026. Extrato de entregas do SICONFI e SIOPE. Coleta em 24/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Desde 2021, de 103 relatórios fiscais com prazo vencido: 38 entregues no prazo, 56 com atraso e 9 ainda não entregues.</p><a href="ruropolis.html#aba-relatorios">Abrir relatórios no painel completo →</a></details></li></ul>
+    <div class="rodape-cidade"><a class="botao" href="ruropolis.html">Ver painel completo de Rurópolis<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+  </article>
+  <article class="cidade" data-muni="placas" aria-labelledby="cid-1505650">
+    <header class="cab-cidade">
+      <h2 id="cid-1505650"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Placas</h2>
+      <p class="meta">PA · Servidores no INSS</p>
+      <div class="placar" aria-label="Resumo dos quatro pilares"><span class="selo diverg"><i aria-hidden="true"></i>1 divergência</span><span class="selo atencao"><i aria-hidden="true"></i>3 atenções</span></div>
+    </header>
+    <ul class="pilares"><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></svg>Orçamento</h3><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></div><p class="manchete">R$ 205,2 mi aprovados para 2026; 68,6% já comprometidos até 31/08</p><div class="progresso" role="img" aria-label="68,6% do orçamento atualizado comprometido até 31/08/2026"><div class="trilho"><div class="cheio" style="width:68.6%"></div></div><div class="rotulos"><span><span class="num">68,6%</span> comprometido até 31/08/2026</span><span><span class="num">R$ 140,7 mi</span> de <span class="num">R$ 205,3 mi</span></span></div></div><p class="fonte-mini">RREO 4º bim./2026, SICONFI. Coleta em 24/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Em 2024, o orçamento cresceu 54,1% durante o ano, acima do limite de 30% da lei orçamentária; não foi localizada lei que autorize a diferença.</p><a href="placas.html#aba-orcamento">Abrir orçamento no painel completo →</a></details></li><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>Educação</h3><span class="selo diverg"><i aria-hidden="true"></i>Fontes divergem</span></div><p class="manchete">Mínimo de 25% no ensino em 2025: as fontes oficiais não batem</p><p class="ind-titulo">Mínimo de 25% no ensino: quanto cada fonte declarou para 2025 (mínimo de 25%)</p><div class="fontes-lado"><div class="fonte-valor cumpre"><span class="quem">SIOPE</span><span class="num">25,35%</span><span class="res">✓ acima do mínimo</span></div><div class="fonte-valor abaixo"><span class="quem">Tesouro</span><span class="num">24,50%</span><span class="res">✕ abaixo do mínimo</span></div></div><div class="linha-ind"><span><b>FUNDEB: 70% para os profissionais</b>: cumprido</span><span>SIOPE <span class="num">72,00%</span> · Tesouro <span class="num">71,51%</span></span></div><p class="fonte-mini">Exercício 2025, ano fechado. SIOPE (FNDE), RREO Anexo 14 (SICONFI) e RREO publicado pela Prefeitura. Coleta em 18/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Em 2025: Mínimo de 25% no ensino: as fontes oficiais não batem (SIOPE: 25,35%; Tesouro: 24,50%). Mínimo de 70% do FUNDEB para os profissionais: cumprido (71,51% a 72,00%).</p><a href="placas.html#aba-educacao">Abrir educação no painel completo →</a></details></li><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>Previdência</h3><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></div><p class="manchete">Certificado de regularidade válido até 13/12/2026 (decisão judicial)</p><ul class="pares"><li>Emitido em <span class="num">16/06/2026</span></li><li>Tipo: judicial</li><li>Regime: INSS</li></ul><p class="fonte-mini">Ministério da Previdência (CRP, referência 06/11/2026). Coleta em 24/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Servidores no INSS, sem previdência própria. O certificado é exigido para o município receber transferências voluntárias da União.</p><a href="placas.html#aba-previdencia">Abrir previdência no painel completo →</a></details></li><li class="pilar"><div class="cab"><h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>Relatórios</h3><span class="selo atencao"><i aria-hidden="true"></i>Atenção</span></div><p class="manchete">76 de 99 relatórios entregues com atraso</p><div class="segmentos" role="img" aria-label="99 relatórios: 23 no prazo, 76 com atraso, 0 não entregues"><span class="s-ok" style="width:23.23%" title="no prazo: 23"></span><span class="s-at" style="width:76.77%" title="com atraso: 76"></span></div><ul class="contagens"><li><i style="background:var(--ok-pt)"></i>no prazo <span class="num">23</span></li><li><i style="background:var(--at-pt)"></i>com atraso <span class="num">76</span></li><li><i style="background:var(--pe-pt)"></i>não entregue <span class="num">0</span></li></ul><p class="fonte-mini">RREO, RGF, DCA e SIOPE com prazo vencido, 2021 a 2026. Extrato de entregas do SICONFI e SIOPE. Coleta em 24/11/2026.</p><details class="mais"><summary>Ver detalhes</summary><p>Desde 2021, de 99 relatórios fiscais com prazo vencido: 23 entregues no prazo, 76 com atraso e 0 ainda não entregues.</p><a href="placas.html#aba-relatorios">Abrir relatórios no painel completo →</a></details></li></ul>
+    <div class="rodape-cidade"><a class="botao" href="placas.html">Ver painel completo de Placas<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+  </article></div>
+</div></section>
+<section class="banda banda-branca" id="comparar-municipios"><div class="dentro">
+  <p class="sobre-titulo">Série histórica</p>
+  <h2 class="secao-titulo">Compare os municípios</h2>
+  <p class="secao-sub">Evolução de cada indicador desde 2021. Passe o mouse ou o foco sobre os gráficos para ver os números e as fontes.</p>
+  <div class="abas " id="comparar" data-abas><div class="lista-abas" role="tablist"><button type="button" role="tab" id="t-cmp-educacao" aria-controls="cmp-educacao" aria-selected="true">Educação: 25%</button><button type="button" role="tab" id="t-cmp-fundeb-aba" aria-controls="cmp-fundeb-aba" aria-selected="false">FUNDEB: 70%</button><button type="button" role="tab" id="t-cmp-orcamento" aria-controls="cmp-orcamento" aria-selected="false">Orçamento</button><button type="button" role="tab" id="t-cmp-relatorios" aria-controls="cmp-relatorios" aria-selected="false">Relatórios</button></div><section class="painel-aba" id="cmp-educacao" role="tabpanel" aria-labelledby="t-cmp-educacao"><h2 class="titulo-aba">Educação: mínimo de 25%</h2>
+<section class="card" id="cmp-mde">
+  <h2 id="cmp-mde-t">Educação: aplicação mínima de 25% no ensino</h2>
+  <p class="sub">Percentual da receita de impostos e transferências aplicado na manutenção e no desenvolvimento do ensino. Mínimo de 25% (art. 212 da Constituição).</p>
+  <div class="legend"><span><span class="key-line" style="background:var(--series-1)"></span>Rurópolis</span><span><span class="key-line" style="background:var(--series-2)"></span>Placas</span></div>
+  <p class="sub mini">Linha e ponto cheio: SIOPE. Círculo vazado: RREO Anexo 14 no SICONFI. Losango: RREO Anexo 8 publicado pelo município (PDF). Linha tracejada: mínimo legal de 25%.</p>
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="cmp-mde-t" class="chart">
+<desc>Educação: aplicação mínima de 25% no ensino. SIOPE. Rurópolis: 2021 27,26%, 2022 26,35%, 2023 26,95%, 2024 25,63%, 2025 27,71%; Placas: 2021 25,03%, 2022 25,29%, 2023 27,84%, 2024 25,15%, 2025 25,35%</desc>
+<line x1="44" x2="520" y1="268.0" y2="268.0" class="grid"/>
+<text x="36" y="272.0" class="tick" text-anchor="end">0%</text>
+<line x1="44" x2="520" y1="205.0" y2="205.0" class="grid"/>
+<text x="36" y="209.0" class="tick" text-anchor="end">10%</text>
+<line x1="44" x2="520" y1="142.0" y2="142.0" class="grid"/>
+<text x="36" y="146.0" class="tick" text-anchor="end">20%</text>
+<line x1="44" x2="520" y1="79.0" y2="79.0" class="grid"/>
+<text x="36" y="83.0" class="tick" text-anchor="end">30%</text>
+<line x1="44" x2="520" y1="16.0" y2="16.0" class="grid"/>
+<text x="36" y="20.0" class="tick" text-anchor="end">40%</text>
+<text x="44.0" y="290" class="tick" text-anchor="middle">2021</text>
+<text x="163.0" y="290" class="tick" text-anchor="middle">2022</text>
+<text x="282.0" y="290" class="tick" text-anchor="middle">2023</text>
+<text x="401.0" y="290" class="tick" text-anchor="middle">2024</text>
+<text x="520.0" y="290" class="tick" text-anchor="middle">2025</text>
+<line x1="44" x2="520" y1="110.5" y2="110.5" class="limite"/>
+<path d="M44.0,96.3 L163.0,102.0 L282.0,98.2 L401.0,106.5 L520.0,93.4" class="linha" style="stroke:var(--series-1)"/>
+<circle cx="44.0" cy="83.9" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M44.0,78.6 L51.0,85.6 L44.0,92.6 L37.0,85.6 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="96.3" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="96.3" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2021 (6º bimestre)|SIOPE: 27,26% (confere com o Anexo 8 do SIOPE em PDF: 27,26%)|RREO Anexo 14 (SICONFI): 29,23%|RREO Anexo 8 publicado pela Prefeitura (PDF): 28,95%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="163.0" cy="48.1" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M163.0,41.1 L170.0,48.1 L163.0,55.1 L156.0,48.1 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="102.0" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="102.0" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2022 (6º bimestre)|SIOPE: 26,35% (confere com o Anexo 8 do SIOPE em PDF: 26,35%)|RREO Anexo 14 (SICONFI): 34,91%|RREO Anexo 8 publicado pela Prefeitura (PDF): 34,91%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="282.0" cy="106.0" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M282.0,99.0 L289.0,106.0 L282.0,113.0 L275.0,106.0 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="98.2" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="98.2" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2023 (6º bimestre)|SIOPE: 26,95% (confere com o Anexo 8 do SIOPE em PDF: 26,95%)|RREO Anexo 14 (SICONFI): 25,72%|RREO Anexo 8 publicado pela Prefeitura (PDF): 25,72%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="401.0" cy="117.1" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M401.0,110.1 L408.0,117.1 L401.0,124.1 L394.0,117.1 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="106.5" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="106.5" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2024 (6º bimestre)|SIOPE: 25,63% (confere com o Anexo 8 do SIOPE em PDF: 25,63%)|RREO Anexo 14 (SICONFI): 23,95%|RREO Anexo 8 publicado pela Prefeitura (PDF): 23,95%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<path d="M520.0,125.4 L527.0,132.4 L520.0,139.4 L513.0,132.4 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="93.4" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="93.4" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2025 (6º bimestre)|SIOPE: 27,71% (confere com o Anexo 8 do SIOPE em PDF: 27,71%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 21,52%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<path d="M44.0,110.3 L163.0,108.7 L282.0,92.6 L401.0,109.6 L520.0,108.3" class="linha" style="stroke:var(--series-2)"/>
+<path d="M44.0,215.1 L51.0,222.1 L44.0,229.1 L37.0,222.1 Z" class="losango" style="fill:var(--series-2)"/>
+<circle cx="44.0" cy="110.3" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="44.0" cy="110.3" r="13" class="alvo" tabindex="0" data-tip="Placas, 2021 (6º bimestre)|SIOPE: 25,03% (confere com o Anexo 8 do SIOPE em PDF: 25,03%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 7,28%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<path d="M163.0,29.5 L170.0,36.5 L163.0,43.5 L156.0,36.5 Z" class="losango" style="fill:var(--series-2)"/>
+<circle cx="163.0" cy="108.7" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="163.0" cy="108.7" r="13" class="alvo" tabindex="0" data-tip="Placas, 2022 (6º bimestre)|SIOPE: 25,29% (confere com o Anexo 8 do SIOPE em PDF: 25,29%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 36,75%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="282.0" cy="109.7" r="5" class="vazado" style="stroke:var(--series-2)"/>
+<circle cx="282.0" cy="92.6" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="282.0" cy="92.6" r="13" class="alvo" tabindex="0" data-tip="Placas, 2023 (6º bimestre)|SIOPE: 27,84% (confere com o Anexo 8 do SIOPE em PDF: 27,84%)|RREO Anexo 14 (SICONFI): 25,12%|Resultado: cumpriu nas duas fontes (valores diferentes)"/>
+<circle cx="401.0" cy="109.5" r="5" class="vazado" style="stroke:var(--series-2)"/>
+<path d="M401.0,102.6 L408.0,109.6 L401.0,116.6 L394.0,109.6 Z" class="losango" style="fill:var(--series-2)"/>
+<circle cx="401.0" cy="109.6" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="401.0" cy="109.6" r="13" class="alvo" tabindex="0" data-tip="Placas, 2024 (6º bimestre)|SIOPE: 25,15% (confere com o Anexo 8 do SIOPE em PDF: 25,15%)|RREO Anexo 14 (SICONFI): 25,16%|RREO Anexo 8 publicado pela Prefeitura (PDF): 25,15%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="520.0" cy="113.6" r="5" class="vazado" style="stroke:var(--series-2)"/>
+<circle cx="520.0" cy="108.3" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="520.0" cy="108.3" r="13" class="alvo" tabindex="0" data-tip="Placas, 2025 (6º bimestre)|SIOPE: 25,35% (confere com o Anexo 8 do SIOPE em PDF: 25,35%)|RREO Anexo 14 (SICONFI): 24,50%|Resultado: inconclusivo: uma fonte indica cumprimento e a outra não"/>
+</svg>
+  <details><summary>Ver tabela</summary>
+  <div class="tabela"><table>
+    <thead><tr><th rowspan="2">Exercício</th><th colspan="4">Rurópolis</th><th colspan="4">Placas</th></tr><tr><th class="n">SIOPE</th><th class="n">SICONFI</th><th class="n">Anexo 8 da Prefeitura (PDF)</th><th>Situação</th><th class="n">SIOPE</th><th class="n">SICONFI</th><th class="n">Anexo 8 da Prefeitura (PDF)</th><th>Situação</th></tr></thead>
+    <tbody><tr><td>2021</td><td class="n">27,26%<br><span class="muted mini">Anexo 8 em PDF: 27,26%</span></td><td class="n">29,23%</td><td class="n">28,95%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">25,03%<br><span class="muted mini">Anexo 8 em PDF: 25,03%</span></td><td class="n">não declarado</td><td class="n">7,28%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td></tr><tr><td>2022</td><td class="n">26,35%<br><span class="muted mini">Anexo 8 em PDF: 26,35%</span></td><td class="n">34,91%</td><td class="n">34,91%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">25,29%<br><span class="muted mini">Anexo 8 em PDF: 25,29%</span></td><td class="n">não declarado</td><td class="n">36,75%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2023</td><td class="n">26,95%<br><span class="muted mini">Anexo 8 em PDF: 26,95%</span></td><td class="n">25,72%</td><td class="n">25,72%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">27,84%<br><span class="muted mini">Anexo 8 em PDF: 27,84%</span></td><td class="n">25,12%</td><td class="n"><span class="muted">sem PDF</span></td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu nas duas fontes (valores diferentes)</span></td></tr><tr><td>2024</td><td class="n">25,63%<br><span class="muted mini">Anexo 8 em PDF: 25,63%</span></td><td class="n">23,95%</td><td class="n">23,95%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td><td class="n">25,15%<br><span class="muted mini">Anexo 8 em PDF: 25,15%</span></td><td class="n">25,16%</td><td class="n">25,15%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2025</td><td class="n">27,71%<br><span class="muted mini">Anexo 8 em PDF: 27,71%</span></td><td class="n">não declarado</td><td class="n">21,52%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td><td class="n">25,35%<br><span class="muted mini">Anexo 8 em PDF: 25,35%</span></td><td class="n">24,50%</td><td class="n"><span class="muted">sem PDF</span></td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> inconclusivo: uma fonte indica cumprimento e a outra não</span></td></tr></tbody>
+  </table></div></details>
+  <p class="fonte">Fonte: SIOPE/FNDE, arquivo de indicadores atualizado em 07/11/2026, e SICONFI/Tesouro Nacional,
+  RREO Anexo 14. Exercícios de 2021 a 2025, 6º bimestre (ano fechado). Coleta em 18/11/2026. RREO Anexo 8 em PDF publicado no Portal da Transparência do município: Placas 2021 (emitido em 31/01/2022); Placas 2022 (emitido em 28/01/2023); Placas 2024 (emitido em 28/03/2025); Rurópolis 2021 (emitido em 26/01/2022); Rurópolis 2022 (emitido em 25/01/2023); Rurópolis 2023 (emitido em 24/01/2024); Rurópolis 2024 (emitido em 28/01/2025); Rurópolis 2025 (emitido em 22/05/2026).</p>
+</section></section><section class="painel-aba" id="cmp-fundeb-aba" role="tabpanel" aria-labelledby="t-cmp-fundeb-aba"><h2 class="titulo-aba">FUNDEB: mínimo de 70%</h2>
+<section class="card" id="cmp-fundeb">
+  <h2 id="cmp-fundeb-t">FUNDEB: mínimo de 70% para os profissionais da educação</h2>
+  <p class="sub">Percentual do FUNDEB aplicado na remuneração dos profissionais da educação básica. Mínimo de 70% (art. 212-A, XI, da Constituição).</p>
+  <div class="legend"><span><span class="key-line" style="background:var(--series-1)"></span>Rurópolis</span><span><span class="key-line" style="background:var(--series-2)"></span>Placas</span></div>
+  <p class="sub mini">Linha e ponto cheio: SIOPE. Círculo vazado: RREO Anexo 14 no SICONFI. Losango: RREO Anexo 8 publicado pelo município (PDF). Linha tracejada: mínimo legal de 70%.</p>
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="cmp-fundeb-t" class="chart">
+<desc>FUNDEB: mínimo de 70% para os profissionais da educação. SIOPE. Rurópolis: 2021 71,63%, 2022 70,09%, 2023 78,01%, 2024 71,55%, 2025 71,49%; Placas: 2021 76,01%, 2022 78,71%, 2023 73,79%, 2024 70,08%, 2025 72,00%</desc>
+<line x1="44" x2="520" y1="268.0" y2="268.0" class="grid"/>
+<text x="36" y="272.0" class="tick" text-anchor="end">60%</text>
+<line x1="44" x2="520" y1="205.0" y2="205.0" class="grid"/>
+<text x="36" y="209.0" class="tick" text-anchor="end">70%</text>
+<line x1="44" x2="520" y1="142.0" y2="142.0" class="grid"/>
+<text x="36" y="146.0" class="tick" text-anchor="end">80%</text>
+<line x1="44" x2="520" y1="79.0" y2="79.0" class="grid"/>
+<text x="36" y="83.0" class="tick" text-anchor="end">90%</text>
+<line x1="44" x2="520" y1="16.0" y2="16.0" class="grid"/>
+<text x="36" y="20.0" class="tick" text-anchor="end">100%</text>
+<text x="44.0" y="290" class="tick" text-anchor="middle">2021</text>
+<text x="163.0" y="290" class="tick" text-anchor="middle">2022</text>
+<text x="282.0" y="290" class="tick" text-anchor="middle">2023</text>
+<text x="401.0" y="290" class="tick" text-anchor="middle">2024</text>
+<text x="520.0" y="290" class="tick" text-anchor="middle">2025</text>
+<line x1="44" x2="520" y1="205.0" y2="205.0" class="limite"/>
+<path d="M44.0,194.7 L163.0,204.4 L282.0,154.5 L401.0,195.2 L520.0,195.6" class="linha" style="stroke:var(--series-1)"/>
+<circle cx="44.0" cy="230.8" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M44.0,223.8 L51.0,230.8 L44.0,237.8 L37.0,230.8 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="194.7" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="194.7" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2021 (6º bimestre)|SIOPE: 71,63% (confere com o Anexo 8 do SIOPE em PDF: 71,63%)|RREO Anexo 14 (SICONFI): 65,90%|RREO Anexo 8 publicado pela Prefeitura (PDF): 65,90%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<circle cx="163.0" cy="108.3" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M163.0,101.3 L170.0,108.3 L163.0,115.3 L156.0,108.3 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="204.4" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="204.4" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2022 (6º bimestre)|SIOPE: 70,09% (confere com o Anexo 8 do SIOPE em PDF: 70,09%)|RREO Anexo 14 (SICONFI): 85,35%|RREO Anexo 8 publicado pela Prefeitura (PDF): 85,35%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="282.0" cy="32.4" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M282.0,25.4 L289.0,32.4 L282.0,39.4 L275.0,32.4 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="154.5" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="154.5" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2023 (6º bimestre)|SIOPE: 78,01% (confere com o Anexo 8 do SIOPE em PDF: 78,01%)|RREO Anexo 14 (SICONFI): 97,40%|RREO Anexo 8 publicado pela Prefeitura (PDF): 97,40%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="401.0" cy="138.9" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M401.0,176.7 L408.0,183.7 L401.0,190.7 L394.0,183.7 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="195.2" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="195.2" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2024 (6º bimestre)|SIOPE: 71,55% (confere com o Anexo 8 do SIOPE em PDF: 71,55%)|RREO Anexo 14 (SICONFI): 80,50%|RREO Anexo 8 publicado pela Prefeitura (PDF): 73,38%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<path d="M520.0,103.6 L527.0,110.6 L520.0,117.6 L513.0,110.6 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="195.6" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="195.6" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2025 (6º bimestre)|SIOPE: 71,49% (confere com o Anexo 8 do SIOPE em PDF: 71,49%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 84,98%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<path d="M44.0,167.1 L163.0,150.1 L282.0,181.1 L401.0,204.5 L520.0,192.4" class="linha" style="stroke:var(--series-2)"/>
+<path d="M44.0,194.3 L51.0,201.3 L44.0,208.3 L37.0,201.3 Z" class="losango" style="fill:var(--series-2)"/>
+<circle cx="44.0" cy="167.1" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="44.0" cy="167.1" r="13" class="alvo" tabindex="0" data-tip="Placas, 2021 (6º bimestre)|SIOPE: 76,01% (confere com o Anexo 8 do SIOPE em PDF: 76,01%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 70,58%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<path d="M163.0,197.3 L170.0,204.3 L163.0,211.3 L156.0,204.3 Z" class="losango" style="fill:var(--series-2)"/>
+<circle cx="163.0" cy="150.1" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="163.0" cy="150.1" r="13" class="alvo" tabindex="0" data-tip="Placas, 2022 (6º bimestre)|SIOPE: 78,71% (confere com o Anexo 8 do SIOPE em PDF: 78,71%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 70,11%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="282.0" cy="183.5" r="5" class="vazado" style="stroke:var(--series-2)"/>
+<circle cx="282.0" cy="181.1" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="282.0" cy="181.1" r="13" class="alvo" tabindex="0" data-tip="Placas, 2023 (6º bimestre)|SIOPE: 73,79% (confere com o Anexo 8 do SIOPE em PDF: 73,79%)|RREO Anexo 14 (SICONFI): 73,42%|Resultado: cumpriu nas duas fontes (valores diferentes)"/>
+<circle cx="401.0" cy="204.5" r="5" class="vazado" style="stroke:var(--series-2)"/>
+<path d="M401.0,197.5 L408.0,204.5 L401.0,211.5 L394.0,204.5 Z" class="losango" style="fill:var(--series-2)"/>
+<circle cx="401.0" cy="204.5" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="401.0" cy="204.5" r="13" class="alvo" tabindex="0" data-tip="Placas, 2024 (6º bimestre)|SIOPE: 70,08% (confere com o Anexo 8 do SIOPE em PDF: 70,08%)|RREO Anexo 14 (SICONFI): 70,08%|RREO Anexo 8 publicado pela Prefeitura (PDF): 70,08%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="520.0" cy="195.5" r="5" class="vazado" style="stroke:var(--series-2)"/>
+<circle cx="520.0" cy="192.4" r="4.5" class="ponto" style="fill:var(--series-2)"/>
+<circle cx="520.0" cy="192.4" r="13" class="alvo" tabindex="0" data-tip="Placas, 2025 (6º bimestre)|SIOPE: 72,00% (confere com o Anexo 8 do SIOPE em PDF: 72,00%)|RREO Anexo 14 (SICONFI): 71,51%|Resultado: cumpriu nas duas fontes (valores diferentes)"/>
+</svg>
+  <details><summary>Ver tabela</summary>
+  <div class="tabela"><table>
+    <thead><tr><th rowspan="2">Exercício</th><th colspan="4">Rurópolis</th><th colspan="4">Placas</th></tr><tr><th class="n">SIOPE</th><th class="n">SICONFI</th><th class="n">Anexo 8 da Prefeitura (PDF)</th><th>Situação</th><th class="n">SIOPE</th><th class="n">SICONFI</th><th class="n">Anexo 8 da Prefeitura (PDF)</th><th>Situação</th></tr></thead>
+    <tbody><tr><td>2021</td><td class="n">71,63%<br><span class="muted mini">Anexo 8 em PDF: 71,63%</span></td><td class="n">65,90%</td><td class="n">65,90%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td><td class="n">76,01%<br><span class="muted mini">Anexo 8 em PDF: 76,01%</span></td><td class="n">não declarado</td><td class="n">70,58%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2022</td><td class="n">70,09%<br><span class="muted mini">Anexo 8 em PDF: 70,09%</span></td><td class="n">85,35%</td><td class="n">85,35%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">78,71%<br><span class="muted mini">Anexo 8 em PDF: 78,71%</span></td><td class="n">não declarado</td><td class="n">70,11%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2023</td><td class="n">78,01%<br><span class="muted mini">Anexo 8 em PDF: 78,01%</span></td><td class="n">97,40%</td><td class="n">97,40%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">73,79%<br><span class="muted mini">Anexo 8 em PDF: 73,79%</span></td><td class="n">73,42%</td><td class="n"><span class="muted">sem PDF</span></td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu nas duas fontes (valores diferentes)</span></td></tr><tr><td>2024</td><td class="n">71,55%<br><span class="muted mini">Anexo 8 em PDF: 71,55%</span></td><td class="n">80,50%</td><td class="n">73,38%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">70,08%<br><span class="muted mini">Anexo 8 em PDF: 70,08%</span></td><td class="n">70,08%</td><td class="n">70,08%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2025</td><td class="n">71,49%<br><span class="muted mini">Anexo 8 em PDF: 71,49%</span></td><td class="n">não declarado</td><td class="n">84,98%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td><td class="n">72,00%<br><span class="muted mini">Anexo 8 em PDF: 72,00%</span></td><td class="n">71,51%</td><td class="n"><span class="muted">sem PDF</span></td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu nas duas fontes (valores diferentes)</span></td></tr></tbody>
+  </table></div></details>
+  <p class="fonte">Fonte: SIOPE/FNDE, arquivo de indicadores atualizado em 07/11/2026, e SICONFI/Tesouro Nacional,
+  RREO Anexo 14. Exercícios de 2021 a 2025, 6º bimestre (ano fechado). Coleta em 18/11/2026. RREO Anexo 8 em PDF publicado no Portal da Transparência do município: Placas 2021 (emitido em 31/01/2022); Placas 2022 (emitido em 28/01/2023); Placas 2024 (emitido em 28/03/2025); Rurópolis 2021 (emitido em 26/01/2022); Rurópolis 2022 (emitido em 25/01/2023); Rurópolis 2023 (emitido em 24/01/2024); Rurópolis 2024 (emitido em 28/01/2025); Rurópolis 2025 (emitido em 22/05/2026).</p>
+</section></section><section class="painel-aba" id="cmp-orcamento" role="tabpanel" aria-labelledby="t-cmp-orcamento"><h2 class="titulo-aba">Orçamento</h2>
+<section class="card">
+  <h2 id="cmp-orc-t">Quanto o orçamento mudou durante o ano</h2>
+  <p class="sub">Diferença entre o orçamento atualizado (depois de suplementações e anulações) e o aprovado na Lei Orçamentária Anual, em percentual do aprovado.
+  A lei orçamentária costuma fixar um limite para o prefeito suplementar sem nova lei; acima dele, é preciso lei específica.</p>
+  <div class="legend"><span><span class="key-rect" style="background:var(--series-1)"></span>Rurópolis</span><span><span class="key-rect" style="background:var(--series-2)"></span>Placas</span></div>
+  <svg viewBox="0 0 440 280" role="img" aria-labelledby="cmp-orc-t" class="chart"><desc>Variação do orçamento durante o ano, em percentual do aprovado. Rurópolis: 2023 13,7%, 2024 14,8%, 2025 0,2%, 2026* 2,1%; Placas: 2023 0,0%, 2024 54,1%, 2025 0,0%, 2026* 0,0%</desc><line x1="44" x2="432" y1="246.0" y2="246.0" class="grid"/><text x="36" y="250.0" class="tick" text-anchor="end">0%</text><line x1="44" x2="432" y1="172.0" y2="172.0" class="grid"/><text x="36" y="176.0" class="tick" text-anchor="end">20%</text><line x1="44" x2="432" y1="98.0" y2="98.0" class="grid"/><text x="36" y="102.0" class="tick" text-anchor="end">40%</text><line x1="44" x2="432" y1="24.0" y2="24.0" class="grid"/><text x="36" y="28.0" class="tick" text-anchor="end">60%</text><text x="92.5" y="268" class="tick" text-anchor="middle">2023</text><path d="M55.0,246.0 L55.0,199.3 Q55.0,195.3 59.0,195.3 L87.5,195.3 Q91.5,195.3 91.5,199.3 L91.5,246.0 Z" class="barra" style="fill:var(--series-1)"/><text x="73.2" y="189.3" class="rotulo-barra" text-anchor="middle">13,7%</text><rect x="54.0" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Rurópolis, 2023 (ano fechado)|Variação: 13,7%|Aprovado (LOA): R$ 149.169.968,40|Atualizado: R$ 169.592.575,07"/><rect x="93.5" y="245.0" width="36.5" height="2" style="fill:var(--series-2)"/><text x="111.8" y="240.0" class="rotulo-barra" text-anchor="middle">0%</text><rect x="92.5" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Placas, 2023 (ano fechado)|Variação: 0,0%|Aprovado (LOA): R$ 141.920.372,00|Atualizado: R$ 141.920.372,00"/><text x="189.5" y="268" class="tick" text-anchor="middle">2024</text><path d="M152.0,246.0 L152.0,195.1 Q152.0,191.1 156.0,191.1 L184.5,191.1 Q188.5,191.1 188.5,195.1 L188.5,246.0 Z" class="barra" style="fill:var(--series-1)"/><text x="170.2" y="185.1" class="rotulo-barra" text-anchor="middle">14,8%</text><rect x="151.0" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Rurópolis, 2024 (ano fechado)|Variação: 14,8%|Aprovado (LOA): R$ 170.281.093,64|Atualizado: R$ 195.537.878,64"/><path d="M190.5,246.0 L190.5,49.8 Q190.5,45.8 194.5,45.8 L223.0,45.8 Q227.0,45.8 227.0,49.8 L227.0,246.0 Z" class="barra" style="fill:var(--series-2)"/><text x="208.8" y="39.8" class="rotulo-barra" text-anchor="middle">54,1%</text><rect x="189.5" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Placas, 2024 (ano fechado)|Variação: 54,1%|Aprovado (LOA): R$ 146.177.983,16|Atualizado: R$ 225.260.083,16"/><text x="286.5" y="268" class="tick" text-anchor="middle">2025</text><rect x="249.0" y="245.0" width="36.5" height="2" style="fill:var(--series-1)"/><text x="267.2" y="239.2" class="rotulo-barra" text-anchor="middle">0,2%</text><rect x="248.0" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Rurópolis, 2025 (ano fechado)|Variação: 0,2%|Aprovado (LOA): R$ 207.229.700,00|Atualizado: R$ 207.705.638,11"/><rect x="287.5" y="245.0" width="36.5" height="2" style="fill:var(--series-2)"/><text x="305.8" y="240.0" class="rotulo-barra" text-anchor="middle">0%</text><rect x="286.5" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Placas, 2025 (ano fechado)|Variação: 0,0%|Aprovado (LOA): R$ 181.765.780,00|Atualizado: R$ 181.765.780,00"/><text x="383.5" y="268" class="tick" text-anchor="middle">2026*</text><path d="M346.0,246.0 L346.0,242.1 Q346.0,238.1 350.0,238.1 L378.5,238.1 Q382.5,238.1 382.5,242.1 L382.5,246.0 Z" class="barra" style="fill:var(--series-1)"/><text x="364.2" y="232.1" class="rotulo-barra" text-anchor="middle">2,1%</text><rect x="345.0" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Rurópolis, 2026 (até o 2º bimestre)|Variação: 2,1%|Aprovado (LOA): R$ 207.867.261,43|Atualizado: R$ 212.333.261,43"/><rect x="384.5" y="245.0" width="36.5" height="2" style="fill:var(--series-2)"/><text x="402.8" y="239.9" class="rotulo-barra" text-anchor="middle">0%</text><rect x="383.5" y="24" width="38.5" height="222" class="alvo-r" tabindex="0" data-tip="Placas, 2026 (até o 4º bimestre)|Variação: 0,0%|Aprovado (LOA): R$ 205.213.565,62|Atualizado: R$ 205.258.565,62"/><line x1="44" x2="432" y1="246.0" y2="246.0" class="base"/></svg>
+  <p class="fonte">Fonte: SICONFI/Tesouro Nacional, RREO Anexo 01 (Balanço Orçamentário), 6º bimestre de cada ano. *Ano em curso: Rurópolis, até o 2º bimestre; Placas, até o 4º bimestre.
+  Valores sem as operações intraorçamentárias. Coleta em 24/11/2026.</p>
+</section></section><section class="painel-aba" id="cmp-relatorios" role="tabpanel" aria-labelledby="t-cmp-relatorios"><h2 class="titulo-aba">Relatórios</h2><section class="card"><h2>Relatórios entregues por ano</h2><p class="sub">Relatórios fiscais de cada ano (RREO, RGF da Prefeitura e da Câmara, balanço anual e SIOPE), pela situação da entrega.</p><div class="legenda-status"><span><i style="background:var(--good)"></i>no prazo</span><span><i style="background:var(--warning)"></i>com atraso</span><span><i style="background:var(--critical)"></i>não entregue</span><span><i style="background:var(--in-pt)"></i>retificado ou prazo aberto</span></div><div class="multiplos"><div><h3 id="cmp-ent-1506195"><span class="key-rect" style="background:var(--series-1)"></span>Rurópolis</h3><svg viewBox="0 0 440 260" role="img" aria-labelledby="cmp-ent-1506195" class="chart"><desc>Relatórios fiscais de Rurópolis por ano e situação da entrega. 2021: no prazo 8, com atraso 11, não entregue 0, retificado ou prazo aberto 0; 2022: no prazo 11, com atraso 8, não entregue 0, retificado ou prazo aberto 0; 2023: no prazo 10, com atraso 8, não entregue 0, retificado ou prazo aberto 1; 2024: no prazo 9, com atraso 9, não entregue 0, retificado ou prazo aberto 1; 2025: no prazo 0, com atraso 15, não entregue 2, retificado ou prazo aberto 2; 2026: no prazo 0, com atraso 5, não entregue 7, retificado ou prazo aberto 2</desc><line x1="32" x2="432" y1="228.0" y2="228.0" class="grid"/><text x="24" y="232.0" class="tick" text-anchor="end">0</text><line x1="32" x2="432" y1="176.5" y2="176.5" class="grid"/><text x="24" y="180.5" class="tick" text-anchor="end">5</text><line x1="32" x2="432" y1="125.0" y2="125.0" class="grid"/><text x="24" y="129.0" class="tick" text-anchor="end">10</text><line x1="32" x2="432" y1="73.5" y2="73.5" class="grid"/><text x="24" y="77.5" class="tick" text-anchor="end">15</text><line x1="32" x2="432" y1="22.0" y2="22.0" class="grid"/><text x="24" y="26.0" class="tick" text-anchor="end">20</text><text x="65.3" y="248" class="tick" text-anchor="middle">2021</text><rect x="43.3" y="146.6" width="44.0" height="81.4" style="fill:var(--good)"/><rect x="42.3" y="145.6" width="46.0" height="82.4" class="alvo-r" tabindex="0" data-tip="2021: no prazo|8 de 19 relatórios"/><path d="M43.3,144.6 L43.3,36.3 Q43.3,32.3 47.3,32.3 L83.3,32.3 Q87.3,32.3 87.3,36.3 L87.3,144.6 Z" class="barra" style="fill:var(--warning)"/><rect x="42.3" y="32.3" width="46.0" height="113.3" class="alvo-r" tabindex="0" data-tip="2021: com atraso|11 de 19 relatórios"/><text x="65.3" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="132.0" y="248" class="tick" text-anchor="middle">2022</text><rect x="110.0" y="115.7" width="44.0" height="112.3" style="fill:var(--good)"/><rect x="109.0" y="114.7" width="46.0" height="113.3" class="alvo-r" tabindex="0" data-tip="2022: no prazo|11 de 19 relatórios"/><path d="M110.0,113.7 L110.0,36.3 Q110.0,32.3 114.0,32.3 L150.0,32.3 Q154.0,32.3 154.0,36.3 L154.0,113.7 Z" class="barra" style="fill:var(--warning)"/><rect x="109.0" y="32.3" width="46.0" height="82.4" class="alvo-r" tabindex="0" data-tip="2022: com atraso|8 de 19 relatórios"/><text x="132.0" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="198.7" y="248" class="tick" text-anchor="middle">2023</text><rect x="176.7" y="126.0" width="44.0" height="102.0" style="fill:var(--good)"/><rect x="175.7" y="125.0" width="46.0" height="103.0" class="alvo-r" tabindex="0" data-tip="2023: no prazo|10 de 19 relatórios"/><rect x="176.7" y="43.6" width="44.0" height="80.4" style="fill:var(--warning)"/><rect x="175.7" y="42.6" width="46.0" height="82.4" class="alvo-r" tabindex="0" data-tip="2023: com atraso|8 de 19 relatórios"/><path d="M176.7,41.6 L176.7,36.3 Q176.7,32.3 180.7,32.3 L216.7,32.3 Q220.7,32.3 220.7,36.3 L220.7,41.6 Z" class="barra" style="fill:var(--in-pt)"/><rect x="175.7" y="32.3" width="46.0" height="10.3" class="alvo-r" tabindex="0" data-tip="2023: retificado ou prazo aberto|1 de 19 relatórios"/><text x="198.7" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="265.3" y="248" class="tick" text-anchor="middle">2024</text><rect x="243.3" y="136.3" width="44.0" height="91.7" style="fill:var(--good)"/><rect x="242.3" y="135.3" width="46.0" height="92.7" class="alvo-r" tabindex="0" data-tip="2024: no prazo|9 de 19 relatórios"/><rect x="243.3" y="43.6" width="44.0" height="90.7" style="fill:var(--warning)"/><rect x="242.3" y="42.6" width="46.0" height="92.7" class="alvo-r" tabindex="0" data-tip="2024: com atraso|9 de 19 relatórios"/><path d="M243.3,41.6 L243.3,36.3 Q243.3,32.3 247.3,32.3 L283.3,32.3 Q287.3,32.3 287.3,36.3 L287.3,41.6 Z" class="barra" style="fill:var(--in-pt)"/><rect x="242.3" y="32.3" width="46.0" height="10.3" class="alvo-r" tabindex="0" data-tip="2024: retificado ou prazo aberto|1 de 19 relatórios"/><text x="265.3" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="332.0" y="248" class="tick" text-anchor="middle">2025</text><rect x="310.0" y="74.5" width="44.0" height="153.5" style="fill:var(--warning)"/><rect x="309.0" y="73.5" width="46.0" height="154.5" class="alvo-r" tabindex="0" data-tip="2025: com atraso|15 de 19 relatórios"/><rect x="310.0" y="53.9" width="44.0" height="18.6" style="fill:var(--critical)"/><rect x="309.0" y="52.9" width="46.0" height="20.6" class="alvo-r" tabindex="0" data-tip="2025: não entregue|2 de 19 relatórios"/><path d="M310.0,51.9 L310.0,36.3 Q310.0,32.3 314.0,32.3 L350.0,32.3 Q354.0,32.3 354.0,36.3 L354.0,51.9 Z" class="barra" style="fill:var(--in-pt)"/><rect x="309.0" y="32.3" width="46.0" height="20.6" class="alvo-r" tabindex="0" data-tip="2025: retificado ou prazo aberto|2 de 19 relatórios"/><text x="332.0" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="398.7" y="248" class="tick" text-anchor="middle">2026</text><rect x="376.7" y="177.5" width="44.0" height="50.5" style="fill:var(--warning)"/><rect x="375.7" y="176.5" width="46.0" height="51.5" class="alvo-r" tabindex="0" data-tip="2026: com atraso|5 de 14 relatórios"/><rect x="376.7" y="105.4" width="44.0" height="70.1" style="fill:var(--critical)"/><rect x="375.7" y="104.4" width="46.0" height="72.1" class="alvo-r" tabindex="0" data-tip="2026: não entregue|7 de 14 relatórios"/><path d="M376.7,103.4 L376.7,87.8 Q376.7,83.8 380.7,83.8 L416.7,83.8 Q420.7,83.8 420.7,87.8 L420.7,103.4 Z" class="barra" style="fill:var(--in-pt)"/><rect x="375.7" y="83.8" width="46.0" height="20.6" class="alvo-r" tabindex="0" data-tip="2026: retificado ou prazo aberto|2 de 14 relatórios"/><text x="398.7" y="77.8" class="rotulo-barra" text-anchor="middle">14</text><line x1="32" x2="432" y1="228.0" y2="228.0" class="base"/></svg></div><div><h3 id="cmp-ent-1505650"><span class="key-rect" style="background:var(--series-2)"></span>Placas</h3><svg viewBox="0 0 440 260" role="img" aria-labelledby="cmp-ent-1505650" class="chart"><desc>Relatórios fiscais de Placas por ano e situação da entrega. 2021: no prazo 5, com atraso 10, não entregue 0, retificado ou prazo aberto 4; 2022: no prazo 5, com atraso 14, não entregue 0, retificado ou prazo aberto 0; 2023: no prazo 3, com atraso 16, não entregue 0, retificado ou prazo aberto 0; 2024: no prazo 1, com atraso 18, não entregue 0, retificado ou prazo aberto 0; 2025: no prazo 9, com atraso 7, não entregue 0, retificado ou prazo aberto 3; 2026: no prazo 0, com atraso 11, não entregue 0, retificado ou prazo aberto 3</desc><line x1="32" x2="432" y1="228.0" y2="228.0" class="grid"/><text x="24" y="232.0" class="tick" text-anchor="end">0</text><line x1="32" x2="432" y1="176.5" y2="176.5" class="grid"/><text x="24" y="180.5" class="tick" text-anchor="end">5</text><line x1="32" x2="432" y1="125.0" y2="125.0" class="grid"/><text x="24" y="129.0" class="tick" text-anchor="end">10</text><line x1="32" x2="432" y1="73.5" y2="73.5" class="grid"/><text x="24" y="77.5" class="tick" text-anchor="end">15</text><line x1="32" x2="432" y1="22.0" y2="22.0" class="grid"/><text x="24" y="26.0" class="tick" text-anchor="end">20</text><text x="65.3" y="248" class="tick" text-anchor="middle">2021</text><rect x="43.3" y="177.5" width="44.0" height="50.5" style="fill:var(--good)"/><rect x="42.3" y="176.5" width="46.0" height="51.5" class="alvo-r" tabindex="0" data-tip="2021: no prazo|5 de 19 relatórios"/><rect x="43.3" y="74.5" width="44.0" height="101.0" style="fill:var(--warning)"/><rect x="42.3" y="73.5" width="46.0" height="103.0" class="alvo-r" tabindex="0" data-tip="2021: com atraso|10 de 19 relatórios"/><path d="M43.3,72.5 L43.3,36.3 Q43.3,32.3 47.3,32.3 L83.3,32.3 Q87.3,32.3 87.3,36.3 L87.3,72.5 Z" class="barra" style="fill:var(--in-pt)"/><rect x="42.3" y="32.3" width="46.0" height="41.2" class="alvo-r" tabindex="0" data-tip="2021: retificado ou prazo aberto|4 de 19 relatórios"/><text x="65.3" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="132.0" y="248" class="tick" text-anchor="middle">2022</text><rect x="110.0" y="177.5" width="44.0" height="50.5" style="fill:var(--good)"/><rect x="109.0" y="176.5" width="46.0" height="51.5" class="alvo-r" tabindex="0" data-tip="2022: no prazo|5 de 19 relatórios"/><path d="M110.0,175.5 L110.0,36.3 Q110.0,32.3 114.0,32.3 L150.0,32.3 Q154.0,32.3 154.0,36.3 L154.0,175.5 Z" class="barra" style="fill:var(--warning)"/><rect x="109.0" y="32.3" width="46.0" height="144.2" class="alvo-r" tabindex="0" data-tip="2022: com atraso|14 de 19 relatórios"/><text x="132.0" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="198.7" y="248" class="tick" text-anchor="middle">2023</text><rect x="176.7" y="198.1" width="44.0" height="29.9" style="fill:var(--good)"/><rect x="175.7" y="197.1" width="46.0" height="30.9" class="alvo-r" tabindex="0" data-tip="2023: no prazo|3 de 19 relatórios"/><path d="M176.7,196.1 L176.7,36.3 Q176.7,32.3 180.7,32.3 L216.7,32.3 Q220.7,32.3 220.7,36.3 L220.7,196.1 Z" class="barra" style="fill:var(--warning)"/><rect x="175.7" y="32.3" width="46.0" height="164.8" class="alvo-r" tabindex="0" data-tip="2023: com atraso|16 de 19 relatórios"/><text x="198.7" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="265.3" y="248" class="tick" text-anchor="middle">2024</text><rect x="243.3" y="218.7" width="44.0" height="9.3" style="fill:var(--good)"/><rect x="242.3" y="217.7" width="46.0" height="10.3" class="alvo-r" tabindex="0" data-tip="2024: no prazo|1 de 19 relatórios"/><path d="M243.3,216.7 L243.3,36.3 Q243.3,32.3 247.3,32.3 L283.3,32.3 Q287.3,32.3 287.3,36.3 L287.3,216.7 Z" class="barra" style="fill:var(--warning)"/><rect x="242.3" y="32.3" width="46.0" height="185.4" class="alvo-r" tabindex="0" data-tip="2024: com atraso|18 de 19 relatórios"/><text x="265.3" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="332.0" y="248" class="tick" text-anchor="middle">2025</text><rect x="310.0" y="136.3" width="44.0" height="91.7" style="fill:var(--good)"/><rect x="309.0" y="135.3" width="46.0" height="92.7" class="alvo-r" tabindex="0" data-tip="2025: no prazo|9 de 19 relatórios"/><rect x="310.0" y="64.2" width="44.0" height="70.1" style="fill:var(--warning)"/><rect x="309.0" y="63.2" width="46.0" height="72.1" class="alvo-r" tabindex="0" data-tip="2025: com atraso|7 de 19 relatórios"/><path d="M310.0,62.2 L310.0,36.3 Q310.0,32.3 314.0,32.3 L350.0,32.3 Q354.0,32.3 354.0,36.3 L354.0,62.2 Z" class="barra" style="fill:var(--in-pt)"/><rect x="309.0" y="32.3" width="46.0" height="30.9" class="alvo-r" tabindex="0" data-tip="2025: retificado ou prazo aberto|3 de 19 relatórios"/><text x="332.0" y="26.3" class="rotulo-barra" text-anchor="middle">19</text><text x="398.7" y="248" class="tick" text-anchor="middle">2026</text><rect x="376.7" y="115.7" width="44.0" height="112.3" style="fill:var(--warning)"/><rect x="375.7" y="114.7" width="46.0" height="113.3" class="alvo-r" tabindex="0" data-tip="2026: com atraso|11 de 14 relatórios"/><path d="M376.7,113.7 L376.7,87.8 Q376.7,83.8 380.7,83.8 L416.7,83.8 Q420.7,83.8 420.7,87.8 L420.7,113.7 Z" class="barra" style="fill:var(--in-pt)"/><rect x="375.7" y="83.8" width="46.0" height="30.9" class="alvo-r" tabindex="0" data-tip="2026: retificado ou prazo aberto|3 de 14 relatórios"/><text x="398.7" y="77.8" class="rotulo-barra" text-anchor="middle">14</text><line x1="32" x2="432" y1="228.0" y2="228.0" class="base"/></svg></div></div><p class="fonte">Fonte: SICONFI/Tesouro Nacional, extrato de entregas (coleta em 24/11/2026), e SIOPE/FNDE, recibos de transmissão. Prazos da LRF: RREO e SIOPE, 30 dias após o bimestre; RGF, 30 dias após o quadrimestre; balanço anual (DCA), 30 de abril do ano seguinte.</p></section></section></div>
+</div></section>
+<section class="banda banda-escura" id="como-funciona"><div class="dentro">
+  <p class="sobre-titulo">Método</p>
+  <h2 class="secao-titulo">Como o monitor chega a cada selo</h2>
+  <p class="secao-sub">Sem estimativas e sem opinião: o que aparece aqui é o que o próprio município declarou aos órgãos oficiais.</p>
+  <ol class="passos">
+    <li><h3>Coleta automática</h3><p>Os dados vêm direto do SICONFI (Tesouro Nacional), do SIOPE (FNDE), do CADPREV e do Ministério da Previdência, e dos documentos publicados pelas Prefeituras.</p></li>
+    <li><h3>Conferência cruzada</h3><p>O mesmo número, declarado a órgãos diferentes, é comparado. Quando as declarações levam a conclusões opostas, o selo é "Fontes divergem" e as duas aparecem.</p></li>
+    <li><h3>Selo, fonte e data</h3><p>Cada resultado traz o selo, a fonte, o exercício, o período e a data da coleta. O que não foi declarado aparece como "não declarado".</p></li>
+  </ol>
+  <a class="ir" href="metodologia.html">Ler a metodologia completa<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
+</div></section>
 </main>
+<footer class="rodape"><div class="dentro">
+  <div class="colunas">
+    <div><h2>Metodologia</h2>
+      <p>Dados coletados de forma automática das fontes oficiais. Nenhum valor é estimado: o que não foi declarado aparece como "não declarado".</p>
+      <p>Cada número traz a fonte, o exercício, o período e a data da coleta. <a href="metodologia.html">Como funciona</a>.</p></div>
+    <div><h2>Fontes oficiais</h2><ul><li><a href="https://apidatalake.tesouro.gov.br/docs/siconfi/">SICONFI, Tesouro Nacional</a></li><li><a href="https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/53">SIOPE, FNDE</a></li><li><a href="https://cadprev.previdencia.gov.br/">CADPREV</a></li><li><a href="https://www.gov.br/previdencia/pt-br/assuntos/rpps/estatisticas-e-informacoes-dos-rpps-1/estatisticas-e-informacoes-dos-rpps">Ministério da Previdência</a></li><li><a href="https://www.diariomunicipal.com.br/famep/">Diário Oficial dos Municípios do Pará</a></li><li><a href="metodologia.html">Portais das Prefeituras</a></li></ul></div>
+  </div>
+  <div class="base"><span>Prefeitura em Dia · observatório independente de dados públicos</span><span>Última coleta: <span class="num">24/11/2026</span></span></div>
+</div></footer>
+<div id="tip" role="tooltip"></div>
 <script>
 (function(){
   var tip=document.getElementById('tip');
@@ -233,6 +644,56 @@ body{background:var(--papel);color:var(--texto);font-family:var(--f-texto);font-
     el.addEventListener('focus',function(){var r=el.getBoundingClientRect();show(el,r.left+r.width/2,r.top);});
     el.addEventListener('blur',hide);
   });
+})();
+
+(function(){
+  function ativar(caixa,aba,foco,marcar){
+    caixa.querySelectorAll(':scope>.lista-abas [role=tab]').forEach(function(t){
+      var on=t===aba;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});
+    if(foco)aba.focus();
+    if(marcar&&caixa.hasAttribute('data-endereco'))history.replaceState(null,'','#'+aba.getAttribute('aria-controls'));
+  }
+  document.querySelectorAll('[data-abas]').forEach(function(caixa){
+    var abas=[].slice.call(caixa.querySelectorAll(':scope>.lista-abas [role=tab]'));
+    caixa.classList.add('js');
+    abas.forEach(function(t,i){
+      t.addEventListener('click',function(){ativar(caixa,t,false,true);});
+      t.addEventListener('keydown',function(e){
+        var j=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:e.key==='Home'?0:e.key==='End'?abas.length-1:null;
+        if(j===null)return;e.preventDefault();ativar(caixa,abas[(j+abas.length)%abas.length],true,true);});
+    });
+    var inicial=abas.filter(function(t){return t.getAttribute('aria-selected')==='true';})[0]||abas[0];
+    ativar(caixa,inicial,false,false);
+  });
+  function seguir(){
+    var id=decodeURIComponent(location.hash.slice(1));if(!id)return;
+    var alvo=document.getElementById(id);if(!alvo)return;
+    var p=alvo.closest('.painel-aba'),caminho=[];
+    while(p){caminho.unshift(p);p=p.parentElement&&p.parentElement.closest('.painel-aba');}
+    caminho.forEach(function(painel){
+      var aba=document.querySelector('[aria-controls="'+painel.id+'"]');
+      if(aba)ativar(aba.closest('[data-abas]'),aba,false,false);});
+    if(caminho.length&&alvo!==caminho[caminho.length-1])alvo.scrollIntoView();
+  }
+  window.addEventListener('hashchange',seguir);seguir();
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(){setTimeout(seguir,0);});});
+  // menu do celular
+  var menu=document.querySelector('.menu'),nav=document.getElementById('nav-principal');
+  if(menu&&nav)menu.addEventListener('click',function(){
+    var aberto=nav.classList.toggle('aberto');menu.setAttribute('aria-expanded',aberto?'true':'false');});
+  // filtro de municípios
+  document.querySelectorAll('[data-filtro]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-filtro');
+      document.querySelectorAll('[data-filtro]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+      document.querySelectorAll('[data-muni]').forEach(function(c){c.hidden=!(v==='todos'||c.getAttribute('data-muni')===v);});
+    });
+  });
+  // legenda aberta no computador, recolhida no celular
+  var leg=document.querySelector('details.legenda');
+  if(leg&&window.matchMedia('(max-width:760px)').matches)leg.open=false;
 })();
 </script>
 </body>
