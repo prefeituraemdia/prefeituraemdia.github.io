@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rurópolis | Prefeitura em Dia</title>
+<meta name="description" content="Orçamento, educação, previdência e relatórios fiscais de Rurópolis (PA), com fonte e data.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{color-scheme:light;--surface-1:#fcfcfb;--page:#f9f9f7;--text-primary:#0b0b0b;--text-secondary:#52514e;--muted:#6b6a65;
+--grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,.10);--series-1:#2a78d6;--series-2:#eb6834;--series-3:#1baf7a;--series-4:#eda100;
+--good:#0ca30c;--warning:#fab219;--serious:#ec835a;--critical:#d03b3b;--good-bg:#e3f4e3;--warning-bg:#fdf1d6;--serious-bg:#fbe6dd;--critical-bg:#f8e0e0;--neutro-bg:#efeee9}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){color-scheme:dark;--surface-1:#1a1a19;--page:#0d0d0d;--text-primary:#f0efec;
+--text-secondary:#c3c2b7;--muted:#9c9a93;--grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,.10);--series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500;
+--good-bg:#173317;--warning-bg:#3a2e10;--serious-bg:#3d2419;--critical-bg:#3d1c1c;--neutro-bg:#2a2a28}}
+:root[data-theme="dark"]{color-scheme:dark;--surface-1:#1a1a19;--page:#0d0d0d;--text-primary:#f0efec;--text-secondary:#c3c2b7;--muted:#9c9a93;--grid:#2c2c2a;
+--axis:#383835;--border:rgba(255,255,255,.10);--series-1:#3987e5;--series-2:#d95926;--series-3:#199e70;--series-4:#c98500;
+--good-bg:#173317;--warning-bg:#3a2e10;--serious-bg:#3d2419;--critical-bg:#3d1c1c;--neutro-bg:#2a2a28}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text-primary);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1080px;margin:0 auto;padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header h1{font-size:24px;margin:0 0 4px}
+header p{margin:0;color:var(--text-secondary)}
+nav{display:flex;flex-wrap:wrap;gap:8px 16px;margin:16px 0 8px;font-size:14px}
+nav a{color:var(--text-secondary)}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;padding:20px;margin:16px 0}
+h2{font-size:18px;margin:0 0 4px}
+h3{font-size:16px;margin:20px 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sub{color:var(--text-secondary);margin:0 0 8px}
+.mini{font-size:13px}
+.muted{color:var(--muted)}
+.resumo{font-weight:400;font-size:13px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.tile{margin:0}
+.tile h3{margin:0}
+dl{margin:12px 0 0;display:grid;gap:8px}
+dl div{display:flex;justify-content:space-between;gap:12px;border-top:1px solid var(--grid);padding-top:8px}
+dt{color:var(--text-secondary);font-size:14px}
+dd{margin:0;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--text-secondary);margin:8px 0}
+.legend>span{display:inline-flex;align-items:center;gap:6px}
+.key-line{display:inline-block;width:16px;height:3px;border-radius:2px}
+.key-rect{display:inline-block;width:12px;height:12px;border-radius:3px}
+svg.chart{width:100%;height:auto;display:block;margin:8px 0;overflow:visible}
+.grid{stroke:var(--grid);stroke-width:1}
+.base{stroke:var(--axis);stroke-width:1}
+.limite{stroke:var(--text-secondary);stroke-width:1;stroke-dasharray:4 4}
+.tick{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.fim{fill:var(--text-primary);font-size:12px}
+.linha{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.ponto{stroke:var(--surface-1);stroke-width:2}
+.vazado{fill:var(--surface-1);stroke-width:2}
+.losango{stroke:var(--surface-1);stroke-width:2}
+.alvo,.alvo-r{fill:transparent;cursor:default;outline:none}
+.alvo:focus-visible,.alvo-r:focus-visible{stroke:var(--text-primary);stroke-width:1.5}
+.alvo-r:hover,.alvo-r:focus-visible{fill:var(--text-primary);fill-opacity:.05}
+details{margin-top:8px}
+summary{cursor:pointer;color:var(--text-secondary);font-size:14px}
+.tabela{overflow-x:auto;margin-top:8px;position:relative}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--grid);text-align:left;vertical-align:top}
+th{color:var(--text-secondary);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.grade td{min-width:96px}
+.chip{display:inline-flex;align-items:center;gap:3px;border-radius:999px;padding:1px 8px 1px 6px;font-size:12px;margin:1px 0;white-space:nowrap;
+border:1px solid transparent;color:var(--text-primary)}
+.chip b{font-size:11px}
+.chip.quebra{white-space:normal;border-radius:10px;align-items:flex-start}
+dl .ind{flex-direction:column;gap:4px}
+dl .ind dd{font-weight:400;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.par{color:var(--text-secondary);font-size:14px}
+.par b{color:var(--text-primary);font-weight:600}
+.chip.good{background:var(--good-bg);border-color:var(--good)}
+.chip.warning{background:var(--warning-bg);border-color:var(--warning)}
+.chip.serious{background:var(--serious-bg);border-color:var(--serious)}
+.chip.critical{background:var(--critical-bg);border-color:var(--critical)}
+.chip.neutro{background:var(--neutro-bg);border-color:var(--axis)}
+.chip:focus-visible{outline:2px solid var(--text-primary);outline-offset:1px}
+.sr{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.achados{margin:8px 0;padding-left:20px;color:var(--text-primary)}
+.orcamento{border-width:2px}
+.orc-mun{border-top:1px solid var(--grid);margin-top:20px;padding-top:4px}
+h4{font-size:15px;margin:18px 0 4px}
+.numeros-orc{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.numeros-orc>div,.destaque-orc{background:var(--page);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.destaque-orc{background:var(--warning-bg);margin:12px 0}
+.rot{margin:0;font-size:13px;color:var(--text-secondary)}
+.grande{margin:2px 0;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.numeros-orc .mini,.destaque-orc .mini{margin:0}
+tr.realce td{font-weight:600;background:var(--neutro-bg)}
+.fonte{font-size:12px;color:var(--muted);margin:12px 0 0}
+#tip{position:fixed;pointer-events:none;background:var(--surface-1);color:var(--text-secondary);border:1px solid var(--border);
+border-radius:8px;padding:8px 10px;font-size:12px;box-shadow:0 4px 16px rgba(0,0,0,.12);max-width:280px;display:none;z-index:10}
+#tip strong{display:block;color:var(--text-primary);font-size:13px}
+footer{font-size:13px;color:var(--muted);margin-top:24px}
+footer a{color:var(--text-secondary)}
+
+:root{
+  --tinta:#13315c; --tinta-2:#1f4b86; --papel:#f6f7f9; --folha:#ffffff; --texto:#16202e; --texto-2:#4a5566;
+  --linha:#dfe3ea; --marca:#ffe066; --marca-texto:#3d3200;
+  --ok:#11743c; --ok-bg:#e4f3ea; --atencao:#8a5a00; --atencao-bg:#fff3cd; --pend:#a8321f; --pend-bg:#fbe3de;
+  --diverg:#7a3f99; --diverg-bg:#f1e6f7;
+  --f-titulo:"Archivo","Arial Narrow",Arial,sans-serif; --f-texto:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --tinta:#0d2140; --tinta-2:#9cc0f0; --papel:#0f141b; --folha:#171e28; --texto:#e8edf4; --texto-2:#a9b4c4;
+  --linha:#2a3442; --marca:#f2d04a; --marca-texto:#2b2300;
+  --ok:#6fd39a; --ok-bg:#16301f; --atencao:#f0c25a; --atencao-bg:#3a2e10; --pend:#f29b88; --pend-bg:#3d1f19;
+  --diverg:#d3a6ec; --diverg-bg:#2e1f38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --tinta:#0d2140; --tinta-2:#9cc0f0; --papel:#0f141b; --folha:#171e28; --texto:#e8edf4; --texto-2:#a9b4c4;
+  --linha:#2a3442; --marca:#f2d04a; --marca-texto:#2b2300;
+  --ok:#6fd39a; --ok-bg:#16301f; --atencao:#f0c25a; --atencao-bg:#3a2e10; --pend:#f29b88; --pend-bg:#3d1f19;
+  --diverg:#d3a6ec; --diverg-bg:#2e1f38; color-scheme:dark}
+body{background:var(--papel);color:var(--texto);font-family:var(--f-texto);font-size:16px;line-height:1.55}
+.topo{background:var(--tinta);color:#fff}
+.topo .dentro{max-width:1080px;margin:0 auto;padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-wrap:wrap;gap:10px 24px;align-items:center;justify-content:space-between}
+.marca-site{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:var(--f-titulo);font-weight:800;font-size:20px;letter-spacing:-.01em}
+.marca-site svg{flex:none}
+.topo nav{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:15px}
+.topo nav a{color:#dfe8f5;text-decoration:none;padding:4px 0;border-bottom:2px solid transparent}
+.topo nav a:hover,.topo nav a[aria-current="page"]{color:#fff;border-bottom-color:var(--marca)}
+.topo a:focus-visible,.conteudo a:focus-visible{outline:3px solid var(--marca);outline-offset:2px}
+.conteudo{max-width:1080px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px))}
+.abertura{display:grid;gap:10px;margin-bottom:24px}
+.abertura h1{font-family:var(--f-titulo);font-weight:800;font-size:clamp(30px,5vw,46px);line-height:1.08;margin:0;text-wrap:balance;letter-spacing:-.015em}
+.abertura .lead{font-size:18px;color:var(--texto-2);margin:0;max-width:62ch}
+.abertura .data{font-size:14px;color:var(--texto-2);margin:0}
+.grifo{background:linear-gradient(transparent 55%,var(--marca) 55%);padding:0 2px;color:inherit}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .grifo{background:none;color:var(--marca)}}
+:root[data-theme="dark"] .grifo{background:none;color:var(--marca)}
+.cidades{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin:8px 0 28px}
+.cidade{background:var(--folha);border:1px solid var(--linha);border-radius:14px;padding:20px;display:grid;gap:14px;min-width:0}
+.cidade h2{font-family:var(--f-titulo);font-size:26px;margin:0;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cidade h2 small{font-family:var(--f-texto);font-size:14px;font-weight:400;color:var(--texto-2)}
+.fichas{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.ficha{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;align-items:start;border-top:1px solid var(--linha);padding-top:10px}
+.ficha .tema{font-weight:600;font-size:14px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.04em;grid-column:1}
+.ficha .situ{grid-column:1}
+.ficha .texto{grid-column:2;grid-row:1 / span 2;min-width:0}
+.ficha .manchete{margin:0;font-weight:600;font-size:16px;line-height:1.35}
+.ficha .detalhe{margin:4px 0 0;font-size:14px;color:var(--texto-2)}
+.chaves{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 16px}
+.chave{background:var(--folha);border:1px solid var(--linha);border-radius:12px;padding:14px 16px;min-width:0}
+.chave .rot{margin:0;font-size:13px;color:var(--texto-2);text-transform:uppercase;letter-spacing:.04em}
+.chave .num{margin:2px 0;font-family:var(--f-titulo);font-weight:800;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.chave .nota{margin:0;font-size:13px;color:var(--texto-2)}
+.chave.destaque{border-color:var(--atencao);background:var(--atencao-bg)}
+/* o conteúdo herdado do painel passa a usar as cores e os títulos do site */
+:root,:root[data-theme="light"],:root[data-theme="dark"]{--page:var(--papel);--surface-1:var(--folha);--text-primary:var(--texto);
+  --text-secondary:var(--texto-2);--muted:var(--texto-2);--grid:var(--linha);--border:var(--linha)}
+.conteudo .card{border-radius:14px;padding:22px}
+.conteudo .card h2{font-family:var(--f-titulo);font-weight:800;font-size:24px;letter-spacing:-.01em;text-wrap:balance}
+.conteudo .card h3,.conteudo .card h4{font-family:var(--f-titulo)}
+.carimbo{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1.5px solid currentColor;border-radius:6px;padding:1px 7px;white-space:nowrap}
+.carimbo.ok{color:var(--ok);background:var(--ok-bg)}
+.carimbo.atencao{color:var(--atencao);background:var(--atencao-bg)}
+.carimbo.pend{color:var(--pend);background:var(--pend-bg)}
+.carimbo.diverg{color:var(--diverg);background:var(--diverg-bg)}
+.carimbo.info{color:var(--texto-2);background:var(--papel)}
+.botao{justify-self:start;display:inline-block;background:var(--tinta-2);color:#fff;text-decoration:none;font-weight:600;padding:10px 16px;border-radius:8px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .botao{color:#0f141b}}
+:root[data-theme="dark"] .botao{color:#0f141b}
+.como{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:8px 0 24px}
+.como div{border-left:3px solid var(--marca);padding:2px 0 2px 12px}
+.como h3{font-family:var(--f-titulo);font-size:17px;margin:0 0 4px}
+.como p{margin:0;font-size:15px;color:var(--texto-2)}
+.secao-titulo{font-family:var(--f-titulo);font-size:22px;margin:32px 0 4px}
+.migalha{font-size:14px;color:var(--texto-2);margin:0 0 6px}
+.migalha a{color:var(--texto-2)}
+.rodape{border-top:1px solid var(--linha);margin-top:40px;padding-top:16px;font-size:14px;color:var(--texto-2);display:grid;gap:6px}
+.rodape a{color:var(--texto-2)}
+.metodo{max-width:72ch}
+.metodo h2{font-family:var(--f-titulo);font-size:22px;margin:28px 0 6px}
+.metodo dl{display:grid;gap:10px;margin:0}
+.metodo dt{font-weight:600}
+.metodo dd{margin:0 0 4px;color:var(--texto-2)}
+.metodo table{border-collapse:collapse;width:100%;font-size:15px}
+.metodo th,.metodo td{text-align:left;border-bottom:1px solid var(--linha);padding:8px 8px 8px 0;vertical-align:top}
+.indice-pagina{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:15px;margin:4px 0 8px}
+.indice-pagina a{color:var(--tinta-2)}
+@media (max-width:520px){.ficha{grid-template-columns:1fr}.ficha .texto{grid-column:1;grid-row:auto}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body><header class="topo"><div class="dentro"><a class="marca-site" href="index.html"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="3" y="5" width="24" height="22" rx="3" fill="none" stroke="#fff" stroke-width="2"/><path d="M3 11h24" stroke="#fff" stroke-width="2"/><path d="M9 3v5M21 3v5" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M9.5 18.5l3.5 3.5 7.5-7.5" fill="none" stroke="#ffe066" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Prefeitura em Dia</a><nav aria-label="Páginas"><a href="index.html">Início</a><a href="ruropolis.html" aria-current="page">Rurópolis</a><a href="placas.html">Placas</a><a href="metodologia.html">Como funciona</a></nav></div></header>
+<main class="conteudo">
+  <p class="migalha"><a href="index.html">Início</a> / Rurópolis</p>
+  <section class="abertura">
+    <h1>Rurópolis, Pará</h1>
+    <p class="lead">Município com regime próprio de previdência dos servidores. Código IBGE 1506195.</p>
+    <p class="data">Situação com base na última coleta, em 24/11/2026.</p>
+  </section>
+  <div class="chaves"><div class="chave"><p class="rot">Orçamento aprovado 2026</p><p class="num">R$ 207,9 mi</p><p class="nota">Lei Orçamentária Anual</p></div><div class="chave"><p class="rot">Já comprometido</p><p class="num">R$ 74,6 mi</p><p class="nota">até 30/04/2026, último relatório entregue</p></div><div class="chave destaque"><p class="rot">Crédito novo autorizado</p><p class="num">R$ 68,9 mi</p><p class="nota">lei de 04/11/2026, ainda fora dos relatórios</p></div><div class="chave destaque"><p class="rot">Relatórios não entregues</p><p class="num">9</p><p class="nota">com prazo vencido, desde 2021</p></div></div>
+  <article class="cidade"><ul class="fichas"><li class="ficha"><span class="tema">Orçamento</span><span class="situ"><span class="carimbo atencao">atenção</span></span><div class="texto"><p class="manchete">R$ 207,9 mi aprovados para 2026; 35,1% já comprometidos até 30/04</p><p class="detalhe">Em 04/11/2026, a Lei nº 523/2026 autorizou mais R$ 68,9 mi (33,2% do orçamento aprovado), que ainda não aparecem nos relatórios entregues. Em 2025, o limite para o prefeito mudar o orçamento sem nova lei subiu de 30% para 65,98%, por 2 leis aprovadas durante o ano.</p></div></li><li class="ficha"><span class="tema">Educação</span><span class="situ"><span class="carimbo diverg">fontes divergem</span></span><div class="texto"><p class="manchete">Mínimo de 25% no ensino em 2025: as fontes oficiais não batem</p><p class="detalhe">Em 2025: Mínimo de 25% no ensino: as fontes oficiais não batem (SIOPE: 27,71%; relatório da Prefeitura: 21,52%). Mínimo de 70% do FUNDEB para os profissionais: cumprido (71,49% a 84,98%).</p></div></li><li class="ficha"><span class="tema">Previdência</span><span class="situ"><span class="carimbo pend">pendência</span></span><div class="texto"><p class="manchete">Certificado de regularidade vencido desde 15/01/2013</p><p class="detalhe">Previdência própria dos servidores. 6 acordos para parcelar dívidas com a previdência, sem nenhuma parcela paga registrada no Ministério.</p></div></li><li class="ficha"><span class="tema">Relatórios</span><span class="situ"><span class="carimbo pend">pendência</span></span><div class="texto"><p class="manchete">9 relatórios fiscais ainda não entregues</p><p class="detalhe">Desde 2021, de 103 relatórios fiscais com prazo vencido: 38 entregues no prazo, 56 com atraso e 9 ainda não entregues.</p></div></li></ul></article>
+  <nav class="indice-pagina" aria-label="Nesta página"><a href="#orcamento">Orçamento</a><a href="#atencao">Pontos de atenção</a><a href="#mde">Educação: mínimo de 25%</a><a href="#fundeb">FUNDEB</a><a href="#previdencia">Previdência</a><a href="#rpps">Regime próprio</a><a href="#entregas">Relatórios</a></nav>
+  
+<section class="card orcamento" id="orcamento">
+  <h2>Orçamento: receitas e despesas</h2>
+  <p class="sub">Quanto o município previu arrecadar e gastar na Lei Orçamentária Anual (LOA), quanto o orçamento mudou ao longo do ano com créditos adicionais e quanto foi gasto. "Atualizado" é o orçamento depois das suplementações e anulações.</p>
+  
+  <div class="orc-mun">
+    <h3><span class="key-line" style="background:var(--series-1)"></span>Rurópolis/PA: 2026, até o 2º bimestre (posição em 30/04/2026)</h3>
+    
+    <div class="destaque-orc"><p class="rot">Crédito suplementar autorizado depois do último RREO declarado</p>
+      <p class="grande">R$ 68,9 mi</p>
+      <p class="mini">Lei nº 523/2026, de 04/11/2026: Crédito adicional suplementar para a educação (FUNDEB): obras e reformas de escolas, equipamentos, manutenção e pessoal. Equivale a 33,2% do orçamento aprovado de 2026 (sem as operações intraorçamentárias). Recursos indicados na lei: excesso de arrecadação das receitas do FUNDEB (art. 2º). A abertura é feita por decreto (art. 3º). Ainda não aparece nos números abaixo, porque o RREO declarado vai só até o 2º bimestre.</p></div>
+    
+    <div class="numeros-orc">
+      <div><p class="rot">Orçamento aprovado (LOA)</p><p class="grande">R$ 207,9 mi</p><p class="mini muted">dotação inicial</p></div>
+      <div><p class="rot">Orçamento atualizado</p><p class="grande">R$ 212,3 mi</p><p class="mini muted">+R$ 4,5 mi (2,1%) em créditos adicionais, já descontadas as anulações</p></div>
+      <div><p class="rot">Despesa empenhada</p><p class="grande">R$ 74,6 mi</p><p class="mini muted">35,1% do atualizado; pago R$ 61,6 mi</p></div>
+      <div><p class="rot">Receita arrecadada</p><p class="grande">R$ 74,8 mi</p><p class="mini muted">36,0% da prevista (R$ 207,9 mi)</p></div>
+    </div>
+    <div class="legend"><span><span class="key-rect" style="background:var(--axis)"></span>Orçamento aprovado</span><span><span class="key-rect" style="background:var(--series-4)"></span>Orçamento atualizado</span><span><span class="key-rect" style="background:var(--series-3)"></span>Despesa empenhada</span></div>
+    <svg viewBox="0 0 640 280" role="img" aria-labelledby="orc-1506195" class="chart">
+<desc>Orçamento aprovado, atualizado e despesa empenhada de Rurópolis, 2023 a 2026</desc>
+<line x1="56" x2="628" y1="248.0" y2="248.0" class="grid"/>
+<text x="48" y="252.0" class="tick" text-anchor="end">0</text>
+<line x1="56" x2="628" y1="201.6" y2="201.6" class="grid"/>
+<text x="48" y="205.6" class="tick" text-anchor="end">R$ 50 mi</text>
+<line x1="56" x2="628" y1="155.2" y2="155.2" class="grid"/>
+<text x="48" y="159.2" class="tick" text-anchor="end">R$ 100 mi</text>
+<line x1="56" x2="628" y1="108.8" y2="108.8" class="grid"/>
+<text x="48" y="112.8" class="tick" text-anchor="end">R$ 150 mi</text>
+<line x1="56" x2="628" y1="62.4" y2="62.4" class="grid"/>
+<text x="48" y="66.4" class="tick" text-anchor="end">R$ 200 mi</text>
+<line x1="56" x2="628" y1="16.0" y2="16.0" class="grid"/>
+<text x="48" y="20.0" class="tick" text-anchor="end">R$ 250 mi</text>
+<text x="127.5" y="270" class="tick" text-anchor="middle">2023</text>
+<path d="M89.5,248.0 L89.5,113.6 Q89.5,109.6 93.5,109.6 L109.5,109.6 Q113.5,109.6 113.5,113.6 L113.5,248.0 Z" class="barra" style="fill:var(--axis)"/>
+<rect x="88.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento aprovado, 2023|R$ 149.169.968,40"/>
+<path d="M115.5,248.0 L115.5,94.6 Q115.5,90.6 119.5,90.6 L135.5,90.6 Q139.5,90.6 139.5,94.6 L139.5,248.0 Z" class="barra" style="fill:var(--series-4)"/>
+<rect x="114.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento atualizado, 2023|R$ 169.592.575,07"/>
+<path d="M141.5,248.0 L141.5,121.5 Q141.5,117.5 145.5,117.5 L161.5,117.5 Q165.5,117.5 165.5,121.5 L165.5,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="140.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesa empenhada, 2023|R$ 140.586.584,70"/>
+<text x="270.5" y="270" class="tick" text-anchor="middle">2024</text>
+<path d="M232.5,248.0 L232.5,94.0 Q232.5,90.0 236.5,90.0 L252.5,90.0 Q256.5,90.0 256.5,94.0 L256.5,248.0 Z" class="barra" style="fill:var(--axis)"/>
+<rect x="231.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento aprovado, 2024|R$ 170.281.093,64"/>
+<path d="M258.5,248.0 L258.5,70.5 Q258.5,66.5 262.5,66.5 L278.5,66.5 Q282.5,66.5 282.5,70.5 L282.5,248.0 Z" class="barra" style="fill:var(--series-4)"/>
+<rect x="257.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento atualizado, 2024|R$ 195.537.878,64"/>
+<path d="M284.5,248.0 L284.5,99.1 Q284.5,95.1 288.5,95.1 L304.5,95.1 Q308.5,95.1 308.5,99.1 L308.5,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="283.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesa empenhada, 2024|R$ 164.747.587,96"/>
+<text x="413.5" y="270" class="tick" text-anchor="middle">2025</text>
+<path d="M375.5,248.0 L375.5,59.7 Q375.5,55.7 379.5,55.7 L395.5,55.7 Q399.5,55.7 399.5,59.7 L399.5,248.0 Z" class="barra" style="fill:var(--axis)"/>
+<rect x="374.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento aprovado, 2025|R$ 207.229.700,00"/>
+<path d="M401.5,248.0 L401.5,59.2 Q401.5,55.2 405.5,55.2 L421.5,55.2 Q425.5,55.2 425.5,59.2 L425.5,248.0 Z" class="barra" style="fill:var(--series-4)"/>
+<rect x="400.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento atualizado, 2025|R$ 207.705.638,11"/>
+<path d="M427.5,248.0 L427.5,76.9 Q427.5,72.9 431.5,72.9 L447.5,72.9 Q451.5,72.9 451.5,76.9 L451.5,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="426.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesa empenhada, 2025|R$ 188.715.918,00"/>
+<text x="556.5" y="270" class="tick" text-anchor="middle">2026 (até 2º bim.)</text>
+<path d="M518.5,248.0 L518.5,59.1 Q518.5,55.1 522.5,55.1 L538.5,55.1 Q542.5,55.1 542.5,59.1 L542.5,248.0 Z" class="barra" style="fill:var(--axis)"/>
+<rect x="517.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento aprovado, 2026 (até 2º bim.)|R$ 207.867.261,43"/>
+<path d="M544.5,248.0 L544.5,55.0 Q544.5,51.0 548.5,51.0 L564.5,51.0 Q568.5,51.0 568.5,55.0 L568.5,248.0 Z" class="barra" style="fill:var(--series-4)"/>
+<rect x="543.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Orçamento atualizado, 2026 (até 2º bim.)|R$ 212.333.261,43"/>
+<path d="M570.5,248.0 L570.5,182.8 Q570.5,178.8 574.5,178.8 L590.5,178.8 Q594.5,178.8 594.5,182.8 L594.5,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="569.5" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesa empenhada, 2026 (até 2º bim.)|R$ 74.586.815,24"/>
+<line x1="56" x2="628" y1="248.0" y2="248.0" class="base"/>
+</svg>
+    <div class="tabela"><table>
+      <thead><tr><th>Exercício</th><th class="n">Receita prevista (LOA)</th><th class="n">Receita arrecadada</th><th class="n">Orçamento aprovado</th><th class="n">Orçamento atualizado</th><th class="n">Variação</th><th class="n">Empenhado</th><th class="n">Pago</th></tr></thead>
+      <tbody><tr><td>2023</td><td class='n'>R$ 149.169.968,40</td><td class='n'>R$ 128.949.835,03</td><td class='n'>R$ 149.169.968,40</td><td class='n'>R$ 169.592.575,07</td><td class='n'>13,7%</td><td class='n'>R$ 140.586.584,70</td><td class='n'>R$ 134.937.792,41</td></tr><tr><td>2024</td><td class='n'>R$ 170.281.093,64</td><td class='n'>R$ 158.522.242,90</td><td class='n'>R$ 170.281.093,64</td><td class='n'>R$ 195.537.878,64</td><td class='n'>14,8%</td><td class='n'>R$ 164.747.587,96</td><td class='n'>R$ 162.202.658,92</td></tr><tr><td>2025</td><td class='n'>R$ 207.229.700,00</td><td class='n'>R$ 186.090.023,44</td><td class='n'>R$ 207.229.700,00</td><td class='n'>R$ 207.705.638,11</td><td class='n'>0,2%</td><td class='n'>R$ 188.715.918,00</td><td class='n'>R$ 180.521.916,69</td></tr><tr><td>2026 (até 2º bim.)</td><td class='n'>R$ 207.867.261,43</td><td class='n'>R$ 74.751.983,84</td><td class='n'>R$ 207.867.261,43</td><td class='n'>R$ 212.333.261,43</td><td class='n'>2,1%</td><td class='n'>R$ 74.586.815,24</td><td class='n'>R$ 61.572.481,58</td></tr></tbody></table></div>
+    
+    <h4>Despesa por área, 2025</h4>
+    <div class="tabela"><table>
+      <thead><tr><th>Área (função)</th><th class="n">Aprovado (LOA)</th><th class="n">Atualizado</th><th class="n">Diferença</th><th class="n">Variação</th><th class="n">Empenhado</th></tr></thead>
+      <tbody><tr class='realce'><td>Educação</td><td class='n'>R$ 61.091.016,82</td><td class='n'>R$ 71.205.241,82</td><td class='n'>+R$ 10.114.225,00</td><td class='n'>16,6%</td><td class='n'>R$ 66.670.570,19</td></tr><tr><td>Saúde</td><td class='n'>R$ 43.189.038,35</td><td class='n'>R$ 52.537.847,01</td><td class='n'>+R$ 9.348.808,66</td><td class='n'>21,6%</td><td class='n'>R$ 49.504.052,33</td></tr><tr><td>Administração</td><td class='n'>R$ 25.217.018,41</td><td class='n'>R$ 41.863.305,28</td><td class='n'>+R$ 16.646.286,87</td><td class='n'>66,0%</td><td class='n'>R$ 36.588.949,39</td></tr><tr><td>Previdência Social</td><td class='n'>R$ 12.904.000,00</td><td class='n'>R$ 14.419.850,00</td><td class='n'>+R$ 1.515.850,00</td><td class='n'>11,7%</td><td class='n'>R$ 14.286.721,81</td></tr><tr><td>Legislativa</td><td class='n'>R$ 6.790.000,00</td><td class='n'>R$ 6.790.000,00</td><td class='n'>R$ 0,00</td><td class='n'>0,0%</td><td class='n'>R$ 5.126.072,08</td></tr><tr><td>Assistência Social</td><td class='n'>R$ 6.406.000,00</td><td class='n'>R$ 5.391.880,00</td><td class='n'>-R$ 1.014.120,00</td><td class='n'>-15,8%</td><td class='n'>R$ 3.835.522,84</td></tr><tr><td>Urbanismo</td><td class='n'>R$ 20.274.536,81</td><td class='n'>R$ 3.575.622,28</td><td class='n'>-R$ 16.698.914,53</td><td class='n'>-82,4%</td><td class='n'>R$ 3.243.388,43</td></tr><tr><td>Agricultura</td><td class='n'>R$ 5.119.500,00</td><td class='n'>R$ 2.885.534,00</td><td class='n'>-R$ 2.233.966,00</td><td class='n'>-43,6%</td><td class='n'>R$ 2.220.717,49</td></tr><tr><td>Transporte</td><td class='n'>R$ 9.390.000,00</td><td class='n'>R$ 2.477.620,00</td><td class='n'>-R$ 6.912.380,00</td><td class='n'>-73,6%</td><td class='n'>R$ 2.477.419,17</td></tr><tr><td>Cultura</td><td class='n'>R$ 2.910.000,00</td><td class='n'>R$ 1.821.080,00</td><td class='n'>-R$ 1.088.920,00</td><td class='n'>-37,4%</td><td class='n'>R$ 932.959,67</td></tr><tr><td>Energia</td><td class='n'>R$ 2.217.000,00</td><td class='n'>R$ 1.725.221,00</td><td class='n'>-R$ 491.779,00</td><td class='n'>-22,2%</td><td class='n'>R$ 1.537.709,08</td></tr><tr><td>Gestão Ambiental</td><td class='n'>R$ 1.473.000,00</td><td class='n'>R$ 1.655.724,11</td><td class='n'>+R$ 182.724,11</td><td class='n'>12,4%</td><td class='n'>R$ 1.494.767,72</td></tr><tr><td>Ciência e Tecnologia</td><td class='n'>-</td><td class='n'>R$ 427.942,00</td><td class='n'>-</td><td class='n'>-</td><td class='n'>R$ 76.209,48</td></tr><tr><td>Saneamento</td><td class='n'>R$ 6.701.589,61</td><td class='n'>R$ 424.108,61</td><td class='n'>-R$ 6.277.481,00</td><td class='n'>-93,7%</td><td class='n'>R$ 422.233,61</td></tr><tr><td>Desporto e Lazer</td><td class='n'>R$ 1.480.000,00</td><td class='n'>R$ 338.030,00</td><td class='n'>-R$ 1.141.970,00</td><td class='n'>-77,2%</td><td class='n'>R$ 179.268,22</td></tr><tr><td>Habitação</td><td class='n'>R$ 267.000,00</td><td class='n'>R$ 120.760,00</td><td class='n'>-R$ 146.240,00</td><td class='n'>-54,8%</td><td class='n'>R$ 119.356,49</td></tr><tr><td>Comércio e Serviços</td><td class='n'>-</td><td class='n'>R$ 43.872,00</td><td class='n'>-</td><td class='n'>-</td><td class='n'>-</td></tr><tr><td>Reserva de Contingência</td><td class='n'>R$ 1.800.000,00</td><td class='n'>R$ 2.000,00</td><td class='n'>-R$ 1.798.000,00</td><td class='n'>-99,9%</td><td class='n'>-</td></tr></tbody></table></div>
+    <h4>Despesa por área, 2026 (até 2º bim.)</h4>
+    <div class="tabela"><table>
+      <thead><tr><th>Área (função)</th><th class="n">Aprovado (LOA)</th><th class="n">Atualizado</th><th class="n">Diferença</th><th class="n">Variação</th><th class="n">Empenhado</th></tr></thead>
+      <tbody><tr class='realce'><td>Educação</td><td class='n'>R$ 58.817.239,00</td><td class='n'>R$ 63.365.239,00</td><td class='n'>+R$ 4.548.000,00</td><td class='n'>7,7%</td><td class='n'>R$ 32.691.761,05</td></tr><tr><td>Saúde</td><td class='n'>R$ 42.235.598,00</td><td class='n'>R$ 42.954.598,00</td><td class='n'>+R$ 719.000,00</td><td class='n'>1,7%</td><td class='n'>R$ 15.329.884,45</td></tr><tr><td>Administração</td><td class='n'>R$ 32.077.128,31</td><td class='n'>R$ 35.712.807,74</td><td class='n'>+R$ 3.635.679,43</td><td class='n'>11,3%</td><td class='n'>R$ 12.550.246,28</td></tr><tr><td>Urbanismo</td><td class='n'>R$ 20.035.806,00</td><td class='n'>R$ 16.633.306,00</td><td class='n'>-R$ 3.402.500,00</td><td class='n'>-17,0%</td><td class='n'>R$ 1.432.049,95</td></tr><tr><td>Previdência Social</td><td class='n'>R$ 16.188.980,00</td><td class='n'>R$ 16.518.980,00</td><td class='n'>+R$ 330.000,00</td><td class='n'>2,0%</td><td class='n'>R$ 5.239.164,46</td></tr><tr><td>Legislativa</td><td class='n'>R$ 6.957.150,69</td><td class='n'>R$ 6.957.150,69</td><td class='n'>R$ 0,00</td><td class='n'>0,0%</td><td class='n'>R$ 1.595.894,39</td></tr><tr><td>Assistência Social</td><td class='n'>R$ 6.050.000,00</td><td class='n'>R$ 6.041.000,00</td><td class='n'>-R$ 9.000,00</td><td class='n'>-0,1%</td><td class='n'>R$ 1.823.469,18</td></tr><tr><td>Transporte</td><td class='n'>R$ 6.770.000,00</td><td class='n'>R$ 5.005.090,00</td><td class='n'>-R$ 1.764.910,00</td><td class='n'>-26,1%</td><td class='n'>R$ 739.437,00</td></tr><tr><td>Agricultura</td><td class='n'>R$ 3.381.672,43</td><td class='n'>R$ 4.100.993,00</td><td class='n'>+R$ 719.320,57</td><td class='n'>21,3%</td><td class='n'>R$ 898.598,21</td></tr><tr><td>Saneamento</td><td class='n'>R$ 4.670.000,00</td><td class='n'>R$ 3.949.000,00</td><td class='n'>-R$ 721.000,00</td><td class='n'>-15,4%</td><td class='n'>R$ 377.828,17</td></tr><tr><td>Energia</td><td class='n'>R$ 3.838.225,00</td><td class='n'>R$ 3.440.225,00</td><td class='n'>-R$ 398.000,00</td><td class='n'>-10,4%</td><td class='n'>R$ 586.794,30</td></tr><tr><td>Gestão Ambiental</td><td class='n'>R$ 1.570.800,00</td><td class='n'>R$ 2.324.210,00</td><td class='n'>+R$ 753.410,00</td><td class='n'>48,0%</td><td class='n'>R$ 949.022,23</td></tr><tr><td>Reserva de Contingência</td><td class='n'>R$ 1.747.307,00</td><td class='n'>R$ 1.747.307,00</td><td class='n'>R$ 0,00</td><td class='n'>0,0%</td><td class='n'>-</td></tr><tr><td>Cultura</td><td class='n'>R$ 1.450.000,00</td><td class='n'>R$ 1.456.000,00</td><td class='n'>+R$ 6.000,00</td><td class='n'>0,4%</td><td class='n'>R$ 68.528,25</td></tr><tr><td>Desporto e Lazer</td><td class='n'>R$ 933.000,00</td><td class='n'>R$ 983.000,00</td><td class='n'>+R$ 50.000,00</td><td class='n'>5,4%</td><td class='n'>R$ 227.271,61</td></tr><tr><td>Ciência e Tecnologia</td><td class='n'>R$ 708.000,00</td><td class='n'>R$ 708.000,00</td><td class='n'>R$ 0,00</td><td class='n'>0,0%</td><td class='n'>R$ 37.450,95</td></tr><tr><td>Habitação</td><td class='n'>R$ 436.355,00</td><td class='n'>R$ 436.355,00</td><td class='n'>R$ 0,00</td><td class='n'>0,0%</td><td class='n'>R$ 39.414,76</td></tr></tbody></table></div>
+    <h4>Leis orçamentárias</h4><ul class='achados'><li><b>LOA 2024</b>: Lei nº 469/2023, de 21/12/2023. Orçamento anual do Município para 2024. Valor: R$ 174.777.793,64. Limite para créditos suplementares sem nova lei: 30%, ou R$ 52.433.338,09. Variação líquida do orçamento registrada no RREO no ano: R$ 25.256.785,00 (14,5% do valor da LOA). Art. 5º: créditos suplementares até 30% da despesa fixada, sem nova lei. PDF digitalizado, valores lidos na imagem do documento. <a href="https://4fdfdc7ecc7eac3fcdc8af2e4ed6ae07.cdn.bubble.io/f1787167604009x625453791240188800/LOA%20N%C2%BA469-2023.pdf">Documento oficial</a>.</li><li><b>LOA 2025</b>: Lei nº 480/2024, de 16/12/2024. Orçamento anual do Município para 2025. Valor: R$ 208.550.400,00. Limite para créditos suplementares sem nova lei: 30%, ou R$ 62.565.120,00. O limite foi alterado durante o ano: para 45,98% pela Lei nº 499/2025, de 15/10/2025; para 65,98% pela Lei nº 506/2025, de 16/12/2025. Limite final: R$ 137.601.553,92. Variação líquida do orçamento registrada no RREO no ano: R$ 475.938,11 (0,2% do valor da LOA). Art. 5º: créditos suplementares até 30% da despesa fixada, sem nova lei. PDF digitalizado, valores lidos na imagem do documento. <a href="https://drive.google.com/file/d/1ea7denLR6hSFq77fWnLWmlHqYdvvNGkw/view">Documento oficial</a>.</li><li><b>Crédito suplementar e alteração da LOA 2025</b>: Lei nº 499/2025, de 15/10/2025. Autoriza créditos adicionais suplementares para reforço de dotações e altera o art. 5º da LOA 2025. Valor: R$ 33.331.472,00. Eleva o limite de suplementação da LOA 2025 de 30% para 45,98% da despesa fixada. Recursos indicados: superávit financeiro, excesso de arrecadação e anulação de dotações. <a href="https://www.diariomunicipal.com.br/famep/materia/FF4A239E">Documento oficial</a>.</li><li><b>Alteração da LOA 2025</b>: Lei nº 506/2025, de 16/12/2025. Altera o limite percentual para abertura de créditos suplementares da LOA 2025. Eleva o limite de 45,98% para 65,98% da despesa fixada, com efeitos durante todo o exercício de 2025. Errata nº 014/2025 corrige a publicação da sanção. <a href="https://www.diariomunicipal.com.br/famep/materia/E8C873ED">Documento oficial</a>.</li><li><b>LOA 2026</b>: Lei nº 502/2025, de 12/12/2025. Estima a receita e fixa a despesa do orçamento de 2026. Valor: R$ 213.286.147,00. Limite para créditos suplementares sem nova lei: 50%, ou R$ 106.643.073,50. Variação líquida do orçamento registrada no RREO até o 2º bimestre: R$ 4.466.000,00 (2,1% do valor da LOA). Art. 4º, II: créditos suplementares até 50% da despesa fixada, sem nova lei. <a href="https://4fdfdc7ecc7eac3fcdc8af2e4ed6ae07.cdn.bubble.io/f1768402067367x225539884102274880/LEI%20502%20-%20LOA%20COM%20ANEXOS.pdf">Documento oficial</a>.</li><li><b>Crédito especial 2026</b>: Lei nº 511/2026, de 20/04/2026. Crédito adicional especial para a Escola em Tempo Integral (ETI). Valor: R$ 2.990.200,00. Fontes: complementação da União ao FUNDEB para ETI e transferências de programas do FNDE. <a href="https://www.diariomunicipal.com.br/famep/materia/B2CCC528">Documento oficial</a>.</li><li><b>Crédito suplementar 2026</b>: Lei nº 523/2026, de 04/11/2026. Crédito adicional suplementar para a educação (FUNDEB): obras e reformas de escolas, equipamentos, manutenção e pessoal. Valor: R$ 68.917.360,60. Recursos indicados na lei: excesso de arrecadação das receitas do FUNDEB (art. 2º). A abertura é feita por decreto (art. 3º). <a href="https://4fdfdc7ecc7eac3fcdc8af2e4ed6ae07.cdn.bubble.io/f1793975853551x448448352730005800/LEI%20N%20523-2026%20-%20CREDITO%20ADICIONAL%20SUPLMENTAR%20-%20FUNDEB.pdf">Documento oficial</a>.</li><li><b>Decretos de abertura dos créditos</b>: não localizados no portal da Prefeitura nem no Diário Oficial dos Municípios.</li><li class='muted'>Quando o limite é ampliado e a variação líquida do orçamento fica pequena, os créditos abertos foram compensados, ao menos em parte, por anulações de outras dotações; o valor bruto dos créditos não aparece no RREO.</li><li class='muted'>A variação líquida desconta as anulações de dotações; o total de créditos abertos pode ser maior. Créditos especiais e extraordinários e os autorizados por lei própria não entram no limite da LOA.</li></ul>
+    <p class="fonte">Fonte: SICONFI/Tesouro Nacional, RREO Anexo 01 (Balanço Orçamentário) e Anexo 02 (despesa por função), 6º bimestre de cada ano e último bimestre declarado de 2026. Valores sem as operações intraorçamentárias. Coleta em 24/11/2026.
+    Leis: documentos publicados pela Prefeitura, guardados pelo monitor.</p>
+  </div>
+</section>
+  
+<section class="card" id="atencao">
+  <h2>Pontos de atenção</h2>
+  <p class="sub">Gerados automaticamente a cada coleta, comparando o que o município declarou a cada fonte oficial e às leis orçamentárias publicadas.
+  Uma diferença entre fontes indica que pelo menos uma das declarações precisa de conferência; não indica, por si, qual está correta.</p>
+  <h3>Rurópolis</h3><p class="sub"><span class="chip serious"><b aria-hidden="true">!</b> 7 divergências mudam o resultado do mínimo legal</span></p><ul class="achados"><li><b>2025 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 27,71% e RREO publicado pela Prefeitura (Anexo 8) 21,52%.</li><li><b>2025 · VAAT em despesas de capital (mínimo de 15%).</b> As fontes informam valores diferentes: SIOPE 3,24% e RREO publicado pela Prefeitura (Anexo 8) 19,67%.</li><li><b>2024 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 25,63% e RREO no SICONFI (Anexo 14) 23,95%.</li><li><b>2024 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 25,63% e RREO publicado pela Prefeitura (Anexo 8) 23,95%.</li><li><b>2024 · VAAT em despesas de capital (mínimo de 15%).</b> As fontes informam valores diferentes: SIOPE 15,36% e RREO publicado pela Prefeitura (Anexo 8) 0,00%.</li><li><b>2021 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 71,63% e RREO no SICONFI (Anexo 14) 65,90%.</li><li><b>2021 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 71,63% e RREO publicado pela Prefeitura (Anexo 8) 65,90%.</li></ul><p class="sub"><span class="chip warning"><b aria-hidden="true">!</b> Orçamento e previdência (3)</span></p><ul class="achados"><li><b> · Regularidade previdenciária (CRP).</b> O Certificado de Regularidade Previdenciária está vencido desde 15/01/2013.</li><li><b>2026 · Orçamento.</b> A Lei nº 523/2026, de 04/11/2026, autoriza crédito suplementar de R$ 68.917.360,60 (33,2% do orçamento aprovado), ainda não refletido no último RREO declarado (2º bimestre).</li><li><b>2025 · Orçamento.</b> O limite para créditos suplementares sem nova lei, de 30% na LOA (Lei nº 480/2024), foi ampliado durante o ano: para 45,98% pela Lei nº 499/2025, de 15/10/2025; para 65,98% pela Lei nº 506/2025, de 16/12/2025.</li></ul><details><summary>Outras diferenças entre as fontes, sem mudar o resultado (13)</summary><ul class="achados"><li><b>2025 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 71,49% e RREO publicado pela Prefeitura (Anexo 8) 84,98%.</li><li><b>2024 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 71,55% e RREO no SICONFI (Anexo 14) 80,50%.</li><li><b>2024 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 71,55% e RREO publicado pela Prefeitura (Anexo 8) 73,38%.</li><li><b>2023 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 78,01% e RREO no SICONFI (Anexo 14) 97,40%.</li><li><b>2023 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 78,01% e RREO publicado pela Prefeitura (Anexo 8) 97,40%.</li><li><b>2023 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 26,95% e RREO no SICONFI (Anexo 14) 25,72%.</li><li><b>2023 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 26,95% e RREO publicado pela Prefeitura (Anexo 8) 25,72%.</li><li><b>2022 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 70,09% e RREO no SICONFI (Anexo 14) 85,35%.</li><li><b>2022 · FUNDEB na remuneração (mínimo de 70%).</b> As fontes informam valores diferentes: SIOPE 70,09% e RREO publicado pela Prefeitura (Anexo 8) 85,35%.</li><li><b>2022 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 26,35% e RREO no SICONFI (Anexo 14) 34,91%.</li><li><b>2022 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 26,35% e RREO publicado pela Prefeitura (Anexo 8) 34,91%.</li><li><b>2021 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 27,26% e RREO no SICONFI (Anexo 14) 29,23%.</li><li><b>2021 · MDE (mínimo de 25%).</b> As fontes informam valores diferentes: SIOPE 27,26% e RREO publicado pela Prefeitura (Anexo 8) 28,95%.</li></ul></details>
+</section>
+  
+<section class="card" id="mde">
+  <h2 id="mde-t">Educação: aplicação mínima de 25% (MDE)</h2>
+  <p class="sub">Percentual da receita de impostos e transferências aplicado na manutenção e no desenvolvimento do ensino. Mínimo de 25% (art. 212 da Constituição).</p>
+  <div class="legend"><span><span class="key-line" style="background:var(--series-1)"></span>Rurópolis</span></div>
+  <p class="sub mini">Linha e ponto cheio: SIOPE. Círculo vazado: RREO Anexo 14 no SICONFI. Losango: RREO Anexo 8 publicado pelo município (PDF). Linha tracejada: mínimo legal de 25%.</p>
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="mde-t" class="chart">
+<desc>Educação: aplicação mínima de 25% (MDE). SIOPE. Rurópolis: 2021 27,26%, 2022 26,35%, 2023 26,95%, 2024 25,63%, 2025 27,71%</desc>
+<line x1="44" x2="520" y1="268.0" y2="268.0" class="grid"/>
+<text x="36" y="272.0" class="tick" text-anchor="end">20%</text>
+<line x1="44" x2="520" y1="184.0" y2="184.0" class="grid"/>
+<text x="36" y="188.0" class="tick" text-anchor="end">25%</text>
+<line x1="44" x2="520" y1="100.0" y2="100.0" class="grid"/>
+<text x="36" y="104.0" class="tick" text-anchor="end">30%</text>
+<line x1="44" x2="520" y1="16.0" y2="16.0" class="grid"/>
+<text x="36" y="20.0" class="tick" text-anchor="end">35%</text>
+<text x="44.0" y="290" class="tick" text-anchor="middle">2021</text>
+<text x="163.0" y="290" class="tick" text-anchor="middle">2022</text>
+<text x="282.0" y="290" class="tick" text-anchor="middle">2023</text>
+<text x="401.0" y="290" class="tick" text-anchor="middle">2024</text>
+<text x="520.0" y="290" class="tick" text-anchor="middle">2025</text>
+<line x1="44" x2="520" y1="184.0" y2="184.0" class="limite"/>
+<path d="M44.0,146.0 L163.0,161.3 L282.0,151.2 L401.0,173.4 L520.0,138.5" class="linha" style="stroke:var(--series-1)"/>
+<circle cx="44.0" cy="112.9" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M44.0,110.6 L51.0,117.6 L44.0,124.6 L37.0,117.6 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="146.0" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="146.0" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2021 (6º bimestre)|SIOPE: 27,26% (confere com o Anexo 8 do SIOPE em PDF: 27,26%)|RREO Anexo 14 (SICONFI): 29,23%|RREO Anexo 8 publicado pela Prefeitura (PDF): 28,95%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="163.0" cy="17.5" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M163.0,10.5 L170.0,17.5 L163.0,24.5 L156.0,17.5 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="161.3" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="161.3" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2022 (6º bimestre)|SIOPE: 26,35% (confere com o Anexo 8 do SIOPE em PDF: 26,35%)|RREO Anexo 14 (SICONFI): 34,91%|RREO Anexo 8 publicado pela Prefeitura (PDF): 34,91%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="282.0" cy="171.9" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M282.0,164.9 L289.0,171.9 L282.0,178.9 L275.0,171.9 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="151.2" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="151.2" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2023 (6º bimestre)|SIOPE: 26,95% (confere com o Anexo 8 do SIOPE em PDF: 26,95%)|RREO Anexo 14 (SICONFI): 25,72%|RREO Anexo 8 publicado pela Prefeitura (PDF): 25,72%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="401.0" cy="201.6" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M401.0,194.6 L408.0,201.6 L401.0,208.6 L394.0,201.6 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="173.4" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="173.4" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2024 (6º bimestre)|SIOPE: 25,63% (confere com o Anexo 8 do SIOPE em PDF: 25,63%)|RREO Anexo 14 (SICONFI): 23,95%|RREO Anexo 8 publicado pela Prefeitura (PDF): 23,95%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<path d="M520.0,235.5 L527.0,242.5 L520.0,249.5 L513.0,242.5 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="138.5" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="138.5" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2025 (6º bimestre)|SIOPE: 27,71% (confere com o Anexo 8 do SIOPE em PDF: 27,71%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 21,52%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<text x="530.0" y="142.5" class="fim">Rurópolis 27,71%</text>
+</svg>
+  <details><summary>Ver tabela</summary>
+  <div class="tabela"><table>
+    <thead><tr><th rowspan="2">Exercício</th><th colspan="4">Rurópolis</th></tr><tr><th class="n">SIOPE</th><th class="n">SICONFI</th><th class="n">Anexo 8 da Prefeitura (PDF)</th><th>Situação</th></tr></thead>
+    <tbody><tr><td>2021</td><td class="n">27,26%<br><span class="muted mini">Anexo 8 em PDF: 27,26%</span></td><td class="n">29,23%</td><td class="n">28,95%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2022</td><td class="n">26,35%<br><span class="muted mini">Anexo 8 em PDF: 26,35%</span></td><td class="n">34,91%</td><td class="n">34,91%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2023</td><td class="n">26,95%<br><span class="muted mini">Anexo 8 em PDF: 26,95%</span></td><td class="n">25,72%</td><td class="n">25,72%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2024</td><td class="n">25,63%<br><span class="muted mini">Anexo 8 em PDF: 25,63%</span></td><td class="n">23,95%</td><td class="n">23,95%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td></tr><tr><td>2025</td><td class="n">27,71%<br><span class="muted mini">Anexo 8 em PDF: 27,71%</span></td><td class="n">não declarado</td><td class="n">21,52%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td></tr></tbody>
+  </table></div></details>
+  <p class="fonte">Fonte: SIOPE/FNDE, arquivo de indicadores atualizado em 07/11/2026, e SICONFI/Tesouro Nacional,
+  RREO Anexo 14. Exercícios de 2021 a 2025, 6º bimestre (ano fechado). Coleta em 18/11/2026. RREO Anexo 8 em PDF publicado no Portal da Transparência do município: Rurópolis 2021 (emitido em 26/01/2022); Rurópolis 2022 (emitido em 25/01/2023); Rurópolis 2023 (emitido em 24/01/2024); Rurópolis 2024 (emitido em 28/01/2025); Rurópolis 2025 (emitido em 22/05/2026).</p>
+</section>
+  
+<section class="card" id="fundeb">
+  <h2 id="fundeb-t">FUNDEB: mínimo de 70% para os profissionais da educação</h2>
+  <p class="sub">Percentual do FUNDEB aplicado na remuneração dos profissionais da educação básica. Mínimo de 70% (art. 212-A, XI, da Constituição).</p>
+  <div class="legend"><span><span class="key-line" style="background:var(--series-1)"></span>Rurópolis</span></div>
+  <p class="sub mini">Linha e ponto cheio: SIOPE. Círculo vazado: RREO Anexo 14 no SICONFI. Losango: RREO Anexo 8 publicado pelo município (PDF). Linha tracejada: mínimo legal de 70%.</p>
+  <svg viewBox="0 0 640 300" role="img" aria-labelledby="fundeb-t" class="chart">
+<desc>FUNDEB: mínimo de 70% para os profissionais da educação. SIOPE. Rurópolis: 2021 71,63%, 2022 70,09%, 2023 78,01%, 2024 71,55%, 2025 71,49%</desc>
+<line x1="44" x2="520" y1="268.0" y2="268.0" class="grid"/>
+<text x="36" y="272.0" class="tick" text-anchor="end">60%</text>
+<line x1="44" x2="520" y1="205.0" y2="205.0" class="grid"/>
+<text x="36" y="209.0" class="tick" text-anchor="end">70%</text>
+<line x1="44" x2="520" y1="142.0" y2="142.0" class="grid"/>
+<text x="36" y="146.0" class="tick" text-anchor="end">80%</text>
+<line x1="44" x2="520" y1="79.0" y2="79.0" class="grid"/>
+<text x="36" y="83.0" class="tick" text-anchor="end">90%</text>
+<line x1="44" x2="520" y1="16.0" y2="16.0" class="grid"/>
+<text x="36" y="20.0" class="tick" text-anchor="end">100%</text>
+<text x="44.0" y="290" class="tick" text-anchor="middle">2021</text>
+<text x="163.0" y="290" class="tick" text-anchor="middle">2022</text>
+<text x="282.0" y="290" class="tick" text-anchor="middle">2023</text>
+<text x="401.0" y="290" class="tick" text-anchor="middle">2024</text>
+<text x="520.0" y="290" class="tick" text-anchor="middle">2025</text>
+<line x1="44" x2="520" y1="205.0" y2="205.0" class="limite"/>
+<path d="M44.0,194.7 L163.0,204.4 L282.0,154.5 L401.0,195.2 L520.0,195.6" class="linha" style="stroke:var(--series-1)"/>
+<circle cx="44.0" cy="230.8" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M44.0,223.8 L51.0,230.8 L44.0,237.8 L37.0,230.8 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="194.7" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="44.0" cy="194.7" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2021 (6º bimestre)|SIOPE: 71,63% (confere com o Anexo 8 do SIOPE em PDF: 71,63%)|RREO Anexo 14 (SICONFI): 65,90%|RREO Anexo 8 publicado pela Prefeitura (PDF): 65,90%|Resultado: fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento"/>
+<circle cx="163.0" cy="108.3" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M163.0,101.3 L170.0,108.3 L163.0,115.3 L156.0,108.3 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="204.4" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="163.0" cy="204.4" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2022 (6º bimestre)|SIOPE: 70,09% (confere com o Anexo 8 do SIOPE em PDF: 70,09%)|RREO Anexo 14 (SICONFI): 85,35%|RREO Anexo 8 publicado pela Prefeitura (PDF): 85,35%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="282.0" cy="32.4" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M282.0,25.4 L289.0,32.4 L282.0,39.4 L275.0,32.4 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="154.5" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="282.0" cy="154.5" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2023 (6º bimestre)|SIOPE: 78,01% (confere com o Anexo 8 do SIOPE em PDF: 78,01%)|RREO Anexo 14 (SICONFI): 97,40%|RREO Anexo 8 publicado pela Prefeitura (PDF): 97,40%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<circle cx="401.0" cy="138.9" r="5" class="vazado" style="stroke:var(--series-1)"/>
+<path d="M401.0,176.7 L408.0,183.7 L401.0,190.7 L394.0,183.7 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="195.2" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="401.0" cy="195.2" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2024 (6º bimestre)|SIOPE: 71,55% (confere com o Anexo 8 do SIOPE em PDF: 71,55%)|RREO Anexo 14 (SICONFI): 80,50%|RREO Anexo 8 publicado pela Prefeitura (PDF): 73,38%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<path d="M520.0,103.6 L527.0,110.6 L520.0,117.6 L513.0,110.6 Z" class="losango" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="195.6" r="4.5" class="ponto" style="fill:var(--series-1)"/>
+<circle cx="520.0" cy="195.6" r="13" class="alvo" tabindex="0" data-tip="Rurópolis, 2025 (6º bimestre)|SIOPE: 71,49% (confere com o Anexo 8 do SIOPE em PDF: 71,49%)|RREO Anexo 14 (SICONFI): não declarado|RREO Anexo 8 publicado pela Prefeitura (PDF): 84,98%|Resultado: cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)"/>
+<text x="530.0" y="199.6" class="fim">Rurópolis 71,49%</text>
+</svg>
+  <details><summary>Ver tabela</summary>
+  <div class="tabela"><table>
+    <thead><tr><th rowspan="2">Exercício</th><th colspan="4">Rurópolis</th></tr><tr><th class="n">SIOPE</th><th class="n">SICONFI</th><th class="n">Anexo 8 da Prefeitura (PDF)</th><th>Situação</th></tr></thead>
+    <tbody><tr><td>2021</td><td class="n">71,63%<br><span class="muted mini">Anexo 8 em PDF: 71,63%</span></td><td class="n">65,90%</td><td class="n">65,90%</td><td><span class="chip serious quebra"><b aria-hidden="true">!</b> fontes divergem: o RREO publicado pela Prefeitura (Anexo 8) indica descumprimento; SIOPE indica cumprimento</span></td></tr><tr><td>2022</td><td class="n">70,09%<br><span class="muted mini">Anexo 8 em PDF: 70,09%</span></td><td class="n">85,35%</td><td class="n">85,35%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2023</td><td class="n">78,01%<br><span class="muted mini">Anexo 8 em PDF: 78,01%</span></td><td class="n">97,40%</td><td class="n">97,40%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2024</td><td class="n">71,55%<br><span class="muted mini">Anexo 8 em PDF: 71,55%</span></td><td class="n">80,50%</td><td class="n">73,38%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr><tr><td>2025</td><td class="n">71,49%<br><span class="muted mini">Anexo 8 em PDF: 71,49%</span></td><td class="n">não declarado</td><td class="n">84,98%</td><td><span class="chip good quebra"><b aria-hidden="true">✓</b> cumpriu segundo o RREO publicado pela Prefeitura (Anexo 8)</span></td></tr></tbody>
+  </table></div></details>
+  <p class="fonte">Fonte: SIOPE/FNDE, arquivo de indicadores atualizado em 07/11/2026, e SICONFI/Tesouro Nacional,
+  RREO Anexo 14. Exercícios de 2021 a 2025, 6º bimestre (ano fechado). Coleta em 18/11/2026. RREO Anexo 8 em PDF publicado no Portal da Transparência do município: Rurópolis 2021 (emitido em 26/01/2022); Rurópolis 2022 (emitido em 25/01/2023); Rurópolis 2023 (emitido em 24/01/2024); Rurópolis 2024 (emitido em 28/01/2025); Rurópolis 2025 (emitido em 22/05/2026).</p>
+</section>
+  
+<section class="card" id="rpps">
+  <h2 id="rpps-t">RPPS de Rurópolis: receitas e benefícios</h2>
+  <p class="sub">Regime próprio de previdência dos servidores. Placas não tem RPPS: os servidores são vinculados ao INSS.</p>
+  <div class="legend"><span><span class="key-rect" style="background:var(--series-3)"></span>Receitas previdenciárias</span><span><span class="key-rect" style="background:var(--series-4)"></span>Despesas com benefícios</span></div>
+  <svg viewBox="0 0 640 280" role="img" aria-labelledby="rpps-t" class="chart">
+<desc>RPPS de Rurópolis. 2021: receitas R$ 4.783.577,05, benefícios não declarado; 2022: receitas R$ 7.616.826,99, benefícios não declarado; 2023: receitas R$ 4.213.084,41, benefícios não declarado; 2024: receitas R$ 7.076.639,83, benefícios não declarado; 2025: receitas R$ 7.331.078,38, benefícios R$ 6.839.335,29</desc>
+<line x1="56" x2="628" y1="248.0" y2="248.0" class="grid"/>
+<text x="48" y="252.0" class="tick" text-anchor="end">0</text>
+<line x1="56" x2="628" y1="190.0" y2="190.0" class="grid"/>
+<text x="48" y="194.0" class="tick" text-anchor="end">R$ 2 mi</text>
+<line x1="56" x2="628" y1="132.0" y2="132.0" class="grid"/>
+<text x="48" y="136.0" class="tick" text-anchor="end">R$ 4 mi</text>
+<line x1="56" x2="628" y1="74.0" y2="74.0" class="grid"/>
+<text x="48" y="78.0" class="tick" text-anchor="end">R$ 6 mi</text>
+<line x1="56" x2="628" y1="16.0" y2="16.0" class="grid"/>
+<text x="48" y="20.0" class="tick" text-anchor="end">R$ 8 mi</text>
+<text x="113.2" y="270" class="tick" text-anchor="middle">2021</text>
+<path d="M88.2,248.0 L88.2,113.3 Q88.2,109.3 92.2,109.3 L108.2,109.3 Q112.2,109.3 112.2,113.3 L112.2,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="87.2" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Receitas previdenciárias, 2021|R$ 4.783.577,05"/>
+<text x="126.2" y="242.0" class="tick" text-anchor="middle">-</text>
+<rect x="113.2" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesas com benefícios, 2021|não declarado"/>
+<text x="227.6" y="270" class="tick" text-anchor="middle">2022</text>
+<path d="M202.6,248.0 L202.6,31.1 Q202.6,27.1 206.6,27.1 L222.6,27.1 Q226.6,27.1 226.6,31.1 L226.6,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="201.6" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Receitas previdenciárias, 2022|R$ 7.616.826,99"/>
+<text x="240.6" y="242.0" class="tick" text-anchor="middle">-</text>
+<rect x="227.6" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesas com benefícios, 2022|não declarado"/>
+<text x="342.0" y="270" class="tick" text-anchor="middle">2023</text>
+<path d="M317.0,248.0 L317.0,129.8 Q317.0,125.8 321.0,125.8 L337.0,125.8 Q341.0,125.8 341.0,129.8 L341.0,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="316.0" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Receitas previdenciárias, 2023|R$ 4.213.084,41"/>
+<text x="355.0" y="242.0" class="tick" text-anchor="middle">-</text>
+<rect x="342.0" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesas com benefícios, 2023|não declarado"/>
+<text x="456.4" y="270" class="tick" text-anchor="middle">2024</text>
+<path d="M431.4,248.0 L431.4,46.8 Q431.4,42.8 435.4,42.8 L451.4,42.8 Q455.4,42.8 455.4,46.8 L455.4,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="430.4" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Receitas previdenciárias, 2024|R$ 7.076.639,83"/>
+<text x="469.4" y="242.0" class="tick" text-anchor="middle">-</text>
+<rect x="456.4" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesas com benefícios, 2024|não declarado"/>
+<text x="570.8" y="270" class="tick" text-anchor="middle">2025</text>
+<path d="M545.8,248.0 L545.8,39.4 Q545.8,35.4 549.8,35.4 L565.8,35.4 Q569.8,35.4 569.8,39.4 L569.8,248.0 Z" class="barra" style="fill:var(--series-3)"/>
+<rect x="544.8" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Receitas previdenciárias, 2025|R$ 7.331.078,38"/>
+<path d="M571.8,248.0 L571.8,53.7 Q571.8,49.7 575.8,49.7 L591.8,49.7 Q595.8,49.7 595.8,53.7 L595.8,248.0 Z" class="barra" style="fill:var(--series-4)"/>
+<rect x="570.8" y="16" width="26.0" height="232" class="alvo-r" tabindex="0" data-tip="Despesas com benefícios, 2025|R$ 6.839.335,29"/>
+<line x1="56" x2="628" y1="248.0" y2="248.0" class="base"/>
+</svg>
+  <ul class="achados">
+    <li>De 2021 a 2024 o RREO não declara nenhuma despesa com aposentadorias ou pensões no RPPS; elas aparecem a partir de 2025.</li>
+    <li>Em 2023, as contribuições acumuladas não mudaram do 4º ao 6º bimestre: nenhuma entrada registrada de setembro a dezembro.</li>
+    <li>2026, até o 2º bimestre: contribuições de R$ 751.505,97 e benefícios de R$ 3.354.819,43; resultado previdenciário de -R$ 2.603.313,46.</li>
+  </ul>
+  <p class="sub mini">Leitura do RREO. O que o próprio município declarou ao Ministério da Previdência (DIPR) está logo abaixo.</p>
+  
+  <h3>Repasses e benefícios segundo o DIPR</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Exercício</th><th>Período</th><th class="n">Contribuição patronal repassada</th>
+    <th class="n">Contribuição dos servidores repassada</th><th class="n">Aposentadorias e pensões pagas</th>
+    <th class="n">Parcelamentos recebidos</th><th class="n">Resultado (ingressos menos utilização)</th>
+    <th>Envio dos demonstrativos</th></tr></thead>
+    <tbody><tr><td>2021</td><td>ano</td><td class='n'>R$ 2.353.738,29</td><td class='n'>R$ 2.640.341,54</td><td class='n'>R$ 3.084.916,02</td><td class='n'>R$ 0,00</td><td class='n'>R$ 1.987.818,06</td><td>24/11/2021 a 12/04/2023</td></tr><tr><td>2022</td><td>ano</td><td class='n'>R$ 3.159.682,40</td><td class='n'>R$ 4.138.791,54</td><td class='n'>R$ 4.768.313,55</td><td class='n'>R$ 0,00</td><td class='n'>R$ 4.749.764,36</td><td>26/09/2022 a 08/02/2023</td></tr><tr><td>2023</td><td>ano</td><td class='n'>R$ 2.178.948,66</td><td class='n'>R$ 2.629.457,22</td><td class='n'>R$ 6.890.144,39</td><td class='n'>R$ 0,00</td><td class='n'>R$ 652.454,75</td><td>22/10/2026</td></tr><tr><td>2024</td><td>ano</td><td class='n'>R$ 2.352.889,84</td><td class='n'>R$ 4.738.751,62</td><td class='n'>R$ 10.557.149,96</td><td class='n'>R$ 0,00</td><td class='n'>-R$ 2.071.085,48</td><td>22/10/2026</td></tr><tr><td>2025</td><td>ano</td><td class='n'>R$ 3.917.024,49</td><td class='n'>R$ 4.737.311,28</td><td class='n'>R$ 13.035.526,45</td><td class='n'>R$ 0,00</td><td class='n'>-R$ 1.927.784,58</td><td>26/08/2025 a 15/10/2026</td></tr><tr><td>2026</td><td>8 meses</td><td class='n'>R$ 3.083.170,30</td><td class='n'>R$ 3.160.728,21</td><td class='n'>R$ 9.365.613,77</td><td class='n'>R$ 0,00</td><td class='n'>-R$ 2.572.919,46</td><td>08/07/2026 a 13/10/2026</td></tr></tbody>
+  </table></div>
+  <ul class="achados">
+    <li>O DIPR registra pagamento de aposentadorias e pensões em todos os anos desde 2021. O RREO só passou a declarar essas despesas em 2025.</li>
+    <li>De setembro a dezembro de 2023, o DIPR declara R$ 0,01 por mês de contribuição repassada, tanto patronal quanto dos servidores, sobre uma base de cálculo de R$ 15.438.161,51 no período.</li>
+    <li>Os demonstrativos de 2023 e 2024 foram todos enviados em 22/10/2026.</li>
+    <li>O DIPR não declara nenhum pagamento de parcelamento e nenhum aporte de 2021 a 2026.</li>
+  </ul>
+  <p class="fonte">Fonte: CADPREV/Ministério da Previdência Social, DIPR bimestrais (PDF), valores da coluna "Total do RPPS",
+  somados por exercício. Coleta em 23/11/2026. Valores declarados pelo município e pela unidade gestora.</p>
+  
+  <h3>O que o Ministério da Previdência apurou (Relatórios de Irregularidades do DIPR)</h3>
+  <p class="sub mini">O CADPREV compara o DIPR enviado com a alíquota cadastrada e com os acordos de parcelamento. Os valores abaixo são as diferenças que ele apontou, somadas por exercício.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Exercício</th><th class="n">Patronal repassada a menos</th><th class="n">Contribuição dos servidores repassada a menos</th>
+    <th class="n">Parcelas de parcelamento vencidas e não repassadas</th><th>Parcelas apontadas</th></tr></thead>
+    <tbody><tr><td>2021</td><td class='n'>R$ 984.469,98</td><td class='n'>R$ 697.866,73</td><td class='n'><span class="muted">sem apontamento</span></td><td>-</td></tr><tr><td>2022</td><td class='n'>R$ 979.109,14</td><td class='n'><span class="muted">sem apontamento</span></td><td class='n'><span class="muted">sem apontamento</span></td><td>-</td></tr><tr><td>2023</td><td class='n'>R$ 2.513.796,68</td><td class='n'>R$ 2.070.652,68</td><td class='n'>R$ 8.008.572,65</td><td>48 parcelas, 8 meses</td></tr><tr><td>2024</td><td class='n'>R$ 2.198.465,03</td><td class='n'><span class="muted">sem apontamento</span></td><td class='n'>R$ 11.719.372,48</td><td>72 parcelas, 12 meses</td></tr><tr><td>2025</td><td class='n'>R$ 863.987,02</td><td class='n'><span class="muted">sem apontamento</span></td><td class='n'>R$ 11.243.639,26</td><td>72 parcelas, 12 meses</td></tr><tr><td>2026</td><td class='n'>R$ 77.557,91</td><td class='n'><span class="muted">sem apontamento</span></td><td class='n'>R$ 7.171.691,26</td><td>48 parcelas, 8 meses</td></tr><tr><th scope='row'>Soma</th><td class='n'><b>R$ 7.617.385,76</b></td><td class='n'><b>R$ 2.768.519,41</b></td><td class='n'><b>R$ 38.143.275,65</b></td><td></td></tr></tbody>
+  </table></div>
+  <ul class="achados">
+    <li>Há seis acordos de parcelamento (termos 00114 a 00119/2023, consolidados em 10/04/2023). O CADPREV aponta como não repassadas todas as parcelas, da 1ª (maio de 2023) à 40ª (agosto de 2026).</li>
+    <li>A alíquota patronal cadastrada no CADPREV é de 11%.</li>
+  </ul>
+  <p class="fonte">Fonte: CADPREV/Ministério da Previdência Social, Relatórios de Irregularidades do DIPR (PDF), 26 bimestres de 2021 a 2026.
+  Coleta em 23/11/2026. O valor das parcelas é o "valor devido" atualizado que o relatório informa em cada competência.</p>
+  
+  <h3>Acordos de parcelamento com o RPPS (CADPREV)</h3>
+  <p class="sub mini">Dívidas antigas do município com o regime próprio, parceladas em 2023. A tabela mostra o que o CADPREV registra em cada termo: o valor parcelado, as parcelas pagas, as vencidas e não pagas e o saldo devedor, atualizados até 23/11/2026.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Termo</th><th>Rubrica</th><th>Competências parceladas</th><th class="n">Valor original</th>
+    <th class="n">Valor consolidado (2023)</th><th class="n">Parcelas pagas</th><th class="n">Parcelas vencidas e não pagas</th>
+    <th class="n">Valor vencido atualizado</th><th class="n">Saldo devedor</th><th>Situação do acordo</th></tr></thead>
+    <tbody><tr><td>00114/2023</td><td>Contribuição Patronal</td><td>01/2004 a 12/2004</td><td class='n'>R$ 237.893,55</td><td class='n'>R$ 1.435.319,19</td><td class='n'>0 de 60</td><td class='n'>42</td><td class='n'>R$ 1.573.199,17</td><td class='n'>R$ 1.799.587,80</td><td>Aguardando doc. assinado</td></tr><tr><td>00115/2023</td><td>Contribuição dos Segurados</td><td>01/2004 a 12/2004</td><td class='n'>R$ 238.831,62</td><td class='n'>R$ 1.440.986,58</td><td class='n'>0 de 60</td><td class='n'>42</td><td class='n'>R$ 1.579.410,79</td><td class='n'>R$ 1.806.693,03</td><td>Aguardando doc. assinado</td></tr><tr><td>00116/2023</td><td>Utilização indevida de recursos</td><td>12/2005 a 12/2011</td><td class='n'>R$ 244.080,85</td><td class='n'>R$ 1.039.310,21</td><td class='n'>0 de 60</td><td class='n'>42</td><td class='n'>R$ 1.139.148,84</td><td class='n'>R$ 1.303.076,18</td><td>Aguardando doc. assinado</td></tr><tr><td>00117/2023</td><td>Contribuição Patronal</td><td>01/2005 a 03/2017</td><td class='n'>R$ 4.938.877,75</td><td class='n'>R$ 13.691.070,21</td><td class='n'>0 de 60</td><td class='n'>42</td><td class='n'>R$ 15.006.263,90</td><td class='n'>R$ 17.165.714,20</td><td>Aguardando doc. assinado</td></tr><tr><td>00118/2023</td><td>Contribuição dos Segurados (200 meses)</td><td>11/2005 a 12/2016</td><td class='n'>R$ 3.162.774,46</td><td class='n'>R$ 9.938.057,54</td><td class='n'>0 de 60</td><td class='n'>42</td><td class='n'>R$ 10.892.728,85</td><td class='n'>R$ 12.460.228,06</td><td>Aguardando doc. assinado</td></tr><tr><td>00119/2023</td><td>Contribuição Patronal</td><td>04/2017 a 12/2022</td><td class='n'>R$ 5.942.391,29</td><td class='n'>R$ 8.851.385,95</td><td class='n'>0 de 60</td><td class='n'>42</td><td class='n'>R$ 9.701.669,40</td><td class='n'>R$ 11.097.771,07</td><td>Aguardando doc. assinado</td></tr><tr><th scope='row' colspan='3'>Soma</th><td class='n'><b>R$ 14.764.849,52</b></td><td class='n'><b>R$ 36.396.129,68</b></td><td class='n'><b>0</b></td><td class='n'><b>252</b></td><td class='n'><b>R$ 39.892.420,95</b></td><td class='n'><b>R$ 45.633.070,34</b></td><td></td></tr></tbody>
+  </table></div>
+  <ul class="achados">
+    <li>O CADPREV não registra pagamento em nenhum dos 6 termos. Parcelas vencidas e não pagas: 252, no total.</li>
+    <li>Situação dos acordos na consulta: Aguardando doc. assinado.</li>
+    <li>Estes são os registros do sistema do Ministério da Previdência. Pagamento feito e não informado no CADPREV não aparece aqui.</li>
+  </ul>
+  <p class="fonte">Fonte: CADPREV/Ministério da Previdência Social, consulta pública Acordo de Parcelamento (Demonstrativo Consolidado de Parcelamento e Acompanhamento do Acordo, PDF).
+  Valores atualizados pelo CADPREV até 23/11/2026. Coleta em 23/11/2026.</p>
+  <details><summary>Ver tabela do RREO</summary>
+  <div class="tabela"><table>
+    <thead><tr><th>Exercício</th><th>Período</th><th class="n">Contrib. segurados</th><th class="n">Contrib. patronal</th>
+    <th class="n">Receitas previd.</th><th class="n">Benefícios</th><th class="n">Resultado previd.</th><th class="n">Caixa</th></tr></thead>
+    <tbody><tr><td>2021</td><td>6º bim.</td><td class='n'>R$ 2.429.838,76</td><td class='n'>R$ 2.353.738,29</td><td class='n'>R$ 4.783.577,05</td><td class='n'>não declarado</td><td class='n'>R$ 4.783.577,05</td><td class='n'>R$ 22.191.748,23</td></tr><tr><td>2022</td><td>6º bim.</td><td class='n'>R$ 3.929.800,93</td><td class='n'>R$ 3.687.026,06</td><td class='n'>R$ 7.616.826,99</td><td class='n'>não declarado</td><td class='n'>R$ 7.616.826,99</td><td class='n'>R$ 26.488.326,30</td></tr><tr><td>2023</td><td>6º bim.</td><td class='n'>R$ 2.577.749,82</td><td class='n'>R$ 1.635.334,59</td><td class='n'>R$ 4.213.084,41</td><td class='n'>não declarado</td><td class='n'>R$ 4.213.084,41</td><td class='n'>R$ 26.223.460,35</td></tr><tr><td>2024</td><td>6º bim.</td><td class='n'>R$ 3.668.878,64</td><td class='n'>R$ 3.407.761,19</td><td class='n'>R$ 7.076.639,83</td><td class='n'>não declarado</td><td class='n'>R$ 7.076.639,83</td><td class='n'>R$ 23.992.991,02</td></tr><tr><td>2025</td><td>6º bim.</td><td class='n'>R$ 3.879.487,46</td><td class='n'>R$ 3.451.590,92</td><td class='n'>R$ 7.331.078,38</td><td class='n'>R$ 6.839.335,29</td><td class='n'>R$ 491.743,09</td><td class='n'>não declarado</td></tr><tr><td>2026</td><td>2º bim. (parcial)</td><td class='n'>R$ 375.752,96</td><td class='n'>R$ 375.753,01</td><td class='n'>R$ 751.505,97</td><td class='n'>R$ 3.354.819,43</td><td class='n'>-R$ 2.603.313,46</td><td class='n'>não declarado</td></tr></tbody>
+  </table></div></details>
+  <p class="fonte">Fonte: SICONFI/Tesouro Nacional, RREO Anexo 04. Receitas realizadas e despesas liquidadas até o bimestre.
+  Coleta em 21/11/2026. "não declarado": a linha não consta no demonstrativo.</p>
+</section>
+  
+<section class="card" id="previdencia">
+  <h2>Regularidade previdenciária</h2>
+  <p class="sub">Certificado de Regularidade Previdenciária (CRP) e acordos de parcelamento de dívidas com o regime próprio. O CRP é exigido para receber transferências voluntárias da União e contratar operações de crédito.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Município</th><th>Regime</th><th>Situação do CRP</th><th>Número</th><th>Emissão</th><th>Tipo</th></tr></thead>
+    <tbody><tr><td>Rurópolis</td><td>RPPS</td><td>vencido desde 15/01/2013</td><td>980597-106640</td><td>19/07/2012</td><td>administrativo</td></tr></tbody>
+  </table></div>
+  <h3>Acordos de parcelamento com o RPPS</h3>
+  <ul class="achados"><li>Rurópolis: 6 acordos, R$ 36.396.129,68 consolidados; situação: Aguardando doc. assinado. Os 6 termos têm o mesmo valor consolidado na consulta do CADPREV; o pagamento de cada parcela está na seção RPPS.</li></ul>
+  <p class="fonte">Fonte: Ministério da Previdência Social, extrações nacionais do CADPREV publicadas em pasta pública (página Estatísticas e Informações dos RPPS), referência 06/11/2026.
+  Coleta em 24/11/2026. Arquivos abertos, sem CAPTCHA, com todos os entes do Brasil.</p>
+</section>
+  
+<section class="card" id="entregas">
+  <h2>Entrega dos relatórios no prazo</h2>
+  <p class="sub">Cada marca é um período (bimestre, quadrimestre ou ano). Passe o mouse ou o foco sobre a marca para ver prazo e data.</p>
+  <div class="legend">
+    <span><span class="chip good"><b>✓</b> no prazo</span></span>
+    <span><span class="chip serious"><b>!</b> atraso (+dias)</span></span>
+    <span><span class="chip critical"><b>✕</b> não declarou</span></span>
+    <span><span class="chip neutro"><b>↺</b> retificado, data original indisponível</span></span>
+    <span><span class="chip neutro"><b>…</b> prazo ainda aberto</span></span>
+  </div>
+  
+  <h3>Rurópolis <span class="muted resumo">38 no prazo · 56 com atraso · 9 não declarados</span></h3>
+  <div class="tabela"><table class="grade">
+    <thead><tr><th>Relatório</th><th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th><th>2026</th></tr></thead>
+    <tbody><tr><th scope='row'>RREO</th><td><span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2021, 1º bimestre|entregue com atraso (1 dias)|Prazo: 30/03/2021|Data do status: 31/03/2021"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +1d</span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2021, 2º bimestre|entregue no prazo|Prazo: 30/05/2021|Data do status: 27/05/2021"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2021, 3º bimestre|entregue no prazo|Prazo: 30/07/2021|Data do status: 30/07/2021"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2021, 4º bimestre|entregue no prazo|Prazo: 30/09/2021|Data do status: 29/09/2021"><b aria-hidden="true">✓</b> 4º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2021, 5º bimestre|entregue no prazo|Prazo: 30/11/2021|Data do status: 30/11/2021"><b aria-hidden="true">✓</b> 5º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2021, 6º bimestre|entregue com atraso (19 dias)|Prazo: 30/01/2022|Data do status: 18/02/2022"><b aria-hidden="true">!</b> 6º<span class="sr"> atraso</span> +19d</span></td><td><span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2022, 1º bimestre|entregue com atraso (58 dias)|Prazo: 30/03/2022|Data do status: 27/05/2022"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +58d</span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2022, 2º bimestre|entregue no prazo|Prazo: 30/05/2022|Data do status: 30/05/2022"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2022, 3º bimestre|entregue no prazo|Prazo: 30/07/2022|Data do status: 29/07/2022"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2022, 4º bimestre|entregue no prazo|Prazo: 30/09/2022|Data do status: 28/09/2022"><b aria-hidden="true">✓</b> 4º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2022, 5º bimestre|entregue no prazo|Prazo: 30/11/2022|Data do status: 29/11/2022"><b aria-hidden="true">✓</b> 5º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2022, 6º bimestre|entregue no prazo|Prazo: 30/01/2023|Data do status: 26/01/2023"><b aria-hidden="true">✓</b> 6º<span class="sr"> no prazo</span></span></td><td><span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2023, 1º bimestre|entregue com atraso (57 dias)|Prazo: 30/03/2023|Data do status: 26/05/2023"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +57d</span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2023, 2º bimestre|entregue no prazo|Prazo: 30/05/2023|Data do status: 26/05/2023"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2023, 3º bimestre|entregue no prazo|Prazo: 30/07/2023|Data do status: 28/07/2023"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2023, 4º bimestre|entregue no prazo|Prazo: 30/09/2023|Data do status: 26/09/2023"><b aria-hidden="true">✓</b> 4º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2023, 5º bimestre|entregue no prazo|Prazo: 30/11/2023|Data do status: 29/11/2023"><b aria-hidden="true">✓</b> 5º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2023, 6º bimestre|entregue com atraso (7 dias)|Prazo: 30/01/2024|Data do status: 06/02/2024"><b aria-hidden="true">!</b> 6º<span class="sr"> atraso</span> +7d</span></td><td><span class="chip good" tabindex="0" data-tip="RREO Executivo, 2024, 1º bimestre|entregue no prazo|Prazo: 30/03/2024|Data do status: 25/03/2024"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2024, 2º bimestre|entregue no prazo|Prazo: 30/05/2024|Data do status: 27/05/2024"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2024, 3º bimestre|entregue no prazo|Prazo: 30/07/2024|Data do status: 26/07/2024"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2024, 4º bimestre|entregue no prazo|Prazo: 30/09/2024|Data do status: 26/09/2024"><b aria-hidden="true">✓</b> 4º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RREO Executivo, 2024, 5º bimestre|entregue no prazo|Prazo: 30/11/2024|Data do status: 28/11/2024"><b aria-hidden="true">✓</b> 5º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2024, 6º bimestre|entregue com atraso (280 dias)|Prazo: 30/01/2025|Data do status: 06/11/2025"><b aria-hidden="true">!</b> 6º<span class="sr"> atraso</span> +280d</span></td><td><span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2025, 1º bimestre|entregue com atraso (346 dias)|Prazo: 30/03/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +346d</span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2025, 2º bimestre|entregue com atraso (285 dias)|Prazo: 30/05/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +285d</span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2025, 3º bimestre|entregue com atraso (224 dias)|Prazo: 30/07/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +224d</span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2025, 4º bimestre|entregue com atraso (162 dias)|Prazo: 30/09/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 4º<span class="sr"> atraso</span> +162d</span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2025, 5º bimestre|entregue com atraso (101 dias)|Prazo: 30/11/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 5º<span class="sr"> atraso</span> +101d</span> <span class="chip neutro" tabindex="0" data-tip="RREO Executivo, 2025, 6º bimestre|entregue, retificado (data original indisponível)|Prazo: 30/01/2026|Data do status: 15/06/2026"><b aria-hidden="true">↺</b> 6º<span class="sr"> retificado</span></span></td><td><span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2026, 1º bimestre|entregue com atraso (84 dias)|Prazo: 30/03/2026|Data do status: 22/06/2026"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +84d</span> <span class="chip serious" tabindex="0" data-tip="RREO Executivo, 2026, 2º bimestre|entregue com atraso (110 dias)|Prazo: 30/05/2026|Data do status: 17/09/2026"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +110d</span> <span class="chip critical" tabindex="0" data-tip="RREO Executivo, 2026, 3º bimestre|não declarou (117 dias)|Prazo: 30/07/2026"><b aria-hidden="true">✕</b> 3º<span class="sr"> não declarou</span></span> <span class="chip critical" tabindex="0" data-tip="RREO Executivo, 2026, 4º bimestre|não declarou (55 dias)|Prazo: 30/09/2026"><b aria-hidden="true">✕</b> 4º<span class="sr"> não declarou</span></span> <span class="chip neutro" tabindex="0" data-tip="RREO Executivo, 2026, 5º bimestre|no prazo, ainda não enviado|Prazo: 30/11/2026"><b aria-hidden="true">…</b> 5º<span class="sr"> aguardando</span></span></td></tr><tr><th scope='row'>RGF Prefeitura</th><td><span class="chip good" tabindex="0" data-tip="RGF Executivo, 2021, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2021|Data do status: 27/05/2021"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Executivo, 2021, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2021|Data do status: 29/09/2021"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RGF Executivo, 2021, 3º quadrimestre|entregue com atraso (1 dias)|Prazo: 30/01/2022|Data do status: 31/01/2022"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +1d</span></td><td><span class="chip serious" tabindex="0" data-tip="RGF Executivo, 2022, 1º quadrimestre|entregue com atraso (7 dias)|Prazo: 30/05/2022|Data do status: 06/06/2022"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +7d</span> <span class="chip good" tabindex="0" data-tip="RGF Executivo, 2022, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2022|Data do status: 28/09/2022"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Executivo, 2022, 3º quadrimestre|entregue no prazo|Prazo: 30/01/2023|Data do status: 26/01/2023"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span></td><td><span class="chip good" tabindex="0" data-tip="RGF Executivo, 2023, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2023|Data do status: 24/05/2023"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Executivo, 2023, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2023|Data do status: 26/09/2023"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Executivo, 2023, 3º quadrimestre|entregue no prazo|Prazo: 30/01/2024|Data do status: 29/01/2024"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span></td><td><span class="chip good" tabindex="0" data-tip="RGF Executivo, 2024, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2024|Data do status: 27/05/2024"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Executivo, 2024, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2024|Data do status: 26/09/2024"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RGF Executivo, 2024, 3º quadrimestre|entregue com atraso (280 dias)|Prazo: 30/01/2025|Data do status: 06/11/2025"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +280d</span></td><td><span class="chip serious" tabindex="0" data-tip="RGF Executivo, 2025, 1º quadrimestre|entregue com atraso (285 dias)|Prazo: 30/05/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +285d</span> <span class="chip serious" tabindex="0" data-tip="RGF Executivo, 2025, 2º quadrimestre|entregue com atraso (162 dias)|Prazo: 30/09/2025|Data do status: 11/03/2026"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +162d</span> <span class="chip critical" tabindex="0" data-tip="RGF Executivo, 2025, 3º quadrimestre|não declarou (298 dias)|Prazo: 30/01/2026"><b aria-hidden="true">✕</b> 3º<span class="sr"> não declarou</span></span></td><td><span class="chip critical" tabindex="0" data-tip="RGF Executivo, 2026, 1º quadrimestre|não declarou (178 dias)|Prazo: 30/05/2026"><b aria-hidden="true">✕</b> 1º<span class="sr"> não declarou</span></span> <span class="chip critical" tabindex="0" data-tip="RGF Executivo, 2026, 2º quadrimestre|não declarou (55 dias)|Prazo: 30/09/2026"><b aria-hidden="true">✕</b> 2º<span class="sr"> não declarou</span></span></td></tr><tr><th scope='row'>RGF Câmara</th><td><span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2021, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2021|Data do status: 27/05/2021"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2021, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2021|Data do status: 29/09/2021"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RGF Legislativo, 2021, 3º quadrimestre|entregue com atraso (1 dias)|Prazo: 30/01/2022|Data do status: 31/01/2022"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +1d</span></td><td><span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2022, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2022|Data do status: 30/05/2022"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2022, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2022|Data do status: 28/09/2022"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2022, 3º quadrimestre|entregue no prazo|Prazo: 30/01/2023|Data do status: 26/01/2023"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span></td><td><span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2023, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2023|Data do status: 24/05/2023"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2023, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2023|Data do status: 26/09/2023"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2023, 3º quadrimestre|entregue no prazo|Prazo: 30/01/2024|Data do status: 29/01/2024"><b aria-hidden="true">✓</b> 3º<span class="sr"> no prazo</span></span></td><td><span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2024, 1º quadrimestre|entregue no prazo|Prazo: 30/05/2024|Data do status: 27/05/2024"><b aria-hidden="true">✓</b> 1º<span class="sr"> no prazo</span></span> <span class="chip good" tabindex="0" data-tip="RGF Legislativo, 2024, 2º quadrimestre|entregue no prazo|Prazo: 30/09/2024|Data do status: 26/09/2024"><b aria-hidden="true">✓</b> 2º<span class="sr"> no prazo</span></span> <span class="chip serious" tabindex="0" data-tip="RGF Legislativo, 2024, 3º quadrimestre|entregue com atraso (132 dias)|Prazo: 30/01/2025|Data do status: 11/06/2025"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +132d</span></td><td><span class="chip serious" tabindex="0" data-tip="RGF Legislativo, 2025, 1º quadrimestre|entregue com atraso (409 dias)|Prazo: 30/05/2025|Data do status: 13/07/2026"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +409d</span> <span class="chip serious" tabindex="0" data-tip="RGF Legislativo, 2025, 2º quadrimestre|entregue com atraso (307 dias)|Prazo: 30/09/2025|Data do status: 03/08/2026"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +307d</span> <span class="chip serious" tabindex="0" data-tip="RGF Legislativo, 2025, 3º quadrimestre|entregue com atraso (164 dias)|Prazo: 30/01/2026|Data do status: 13/07/2026"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +164d</span></td><td><span class="chip serious" tabindex="0" data-tip="RGF Legislativo, 2026, 1º quadrimestre|entregue com atraso (67 dias)|Prazo: 30/05/2026|Data do status: 05/08/2026"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +67d</span> <span class="chip critical" tabindex="0" data-tip="RGF Legislativo, 2026, 2º quadrimestre|não declarou (55 dias)|Prazo: 30/09/2026"><b aria-hidden="true">✕</b> 2º<span class="sr"> não declarou</span></span></td></tr><tr><th scope='row'>DCA (balanço anual)</th><td><span class="chip serious" tabindex="0" data-tip="DCA Executivo, 2021, anual|entregue com atraso (27 dias)|Prazo: 30/04/2022|Data do status: 27/05/2022"><b aria-hidden="true">!</b> anual<span class="sr"> atraso</span> +27d</span></td><td><span class="chip good" tabindex="0" data-tip="DCA Executivo, 2022, anual|entregue no prazo|Prazo: 30/04/2023|Data do status: 02/03/2023"><b aria-hidden="true">✓</b> anual<span class="sr"> no prazo</span></span></td><td><span class="chip serious" tabindex="0" data-tip="DCA Executivo, 2023, anual|entregue com atraso (36 dias)|Prazo: 30/04/2024|Data do status: 05/06/2024"><b aria-hidden="true">!</b> anual<span class="sr"> atraso</span> +36d</span></td><td><span class="chip serious" tabindex="0" data-tip="DCA Executivo, 2024, anual|entregue com atraso (190 dias)|Prazo: 30/04/2025|Data do status: 06/11/2025"><b aria-hidden="true">!</b> anual<span class="sr"> atraso</span> +190d</span></td><td><span class="chip critical" tabindex="0" data-tip="DCA Executivo, 2025, anual|não declarou (208 dias)|Prazo: 30/04/2026"><b aria-hidden="true">✕</b> anual<span class="sr"> não declarou</span></span></td><td><span class="muted">-</span></td></tr><tr><th scope='row'>SIOPE</th><td><span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2021, 1º bimestre|entregue com atraso (771 dias)|Prazo: 30/03/2021|Data do status: 10/05/2023"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +771d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2021, 2º bimestre|entregue com atraso (710 dias)|Prazo: 30/05/2021|Data do status: 10/05/2023"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +710d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2021, 3º bimestre|entregue com atraso (649 dias)|Prazo: 30/07/2021|Data do status: 10/05/2023"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +649d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2021, 4º bimestre|entregue com atraso (587 dias)|Prazo: 30/09/2021|Data do status: 10/05/2023"><b aria-hidden="true">!</b> 4º<span class="sr"> atraso</span> +587d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2021, 5º bimestre|entregue com atraso (526 dias)|Prazo: 30/11/2021|Data do status: 10/05/2023"><b aria-hidden="true">!</b> 5º<span class="sr"> atraso</span> +526d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2021, 6º bimestre|entregue com atraso (465 dias)|Prazo: 30/01/2022|Data do status: 10/05/2023"><b aria-hidden="true">!</b> 6º<span class="sr"> atraso</span> +465d</span></td><td><span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2022, 1º bimestre|entregue com atraso (413 dias)|Prazo: 30/03/2022|Data do status: 17/05/2023"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +413d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2022, 2º bimestre|entregue com atraso (352 dias)|Prazo: 30/05/2022|Data do status: 17/05/2023"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +352d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2022, 3º bimestre|entregue com atraso (291 dias)|Prazo: 30/07/2022|Data do status: 17/05/2023"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +291d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2022, 4º bimestre|entregue com atraso (229 dias)|Prazo: 30/09/2022|Data do status: 17/05/2023"><b aria-hidden="true">!</b> 4º<span class="sr"> atraso</span> +229d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2022, 5º bimestre|entregue com atraso (168 dias)|Prazo: 30/11/2022|Data do status: 17/05/2023"><b aria-hidden="true">!</b> 5º<span class="sr"> atraso</span> +168d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2022, 6º bimestre|entregue com atraso (108 dias)|Prazo: 30/01/2023|Data do status: 18/05/2023"><b aria-hidden="true">!</b> 6º<span class="sr"> atraso</span> +108d</span></td><td><span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2023, 1º bimestre|entregue com atraso (56 dias)|Prazo: 30/03/2023|Data do status: 25/05/2023"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +56d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2023, 2º bimestre|entregue com atraso (1 dias)|Prazo: 30/05/2023|Data do status: 31/05/2023"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +1d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2023, 3º bimestre|entregue com atraso (53 dias)|Prazo: 30/07/2023|Data do status: 21/09/2023"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +53d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2023, 4º bimestre|entregue com atraso (3 dias)|Prazo: 30/09/2023|Data do status: 03/10/2023"><b aria-hidden="true">!</b> 4º<span class="sr"> atraso</span> +3d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2023, 5º bimestre|entregue com atraso (55 dias)|Prazo: 30/11/2023|Data do status: 24/01/2024"><b aria-hidden="true">!</b> 5º<span class="sr"> atraso</span> +55d</span> <span class="chip neutro" tabindex="0" data-tip="SIOPE Executivo, 2023, 6º bimestre|entregue, retificado (data original indisponível)|Prazo: 30/01/2024|Data do status: 13/08/2025"><b aria-hidden="true">↺</b> 6º<span class="sr"> retificado</span></span></td><td><span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2024, 1º bimestre|entregue com atraso (158 dias)|Prazo: 30/03/2024|Data do status: 04/09/2024"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +158d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2024, 2º bimestre|entregue com atraso (97 dias)|Prazo: 30/05/2024|Data do status: 04/09/2024"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +97d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2024, 3º bimestre|entregue com atraso (380 dias)|Prazo: 30/07/2024|Data do status: 14/08/2025"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +380d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2024, 4º bimestre|entregue com atraso (318 dias)|Prazo: 30/09/2024|Data do status: 14/08/2025"><b aria-hidden="true">!</b> 4º<span class="sr"> atraso</span> +318d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2024, 5º bimestre|entregue com atraso (257 dias)|Prazo: 30/11/2024|Data do status: 14/08/2025"><b aria-hidden="true">!</b> 5º<span class="sr"> atraso</span> +257d</span> <span class="chip neutro" tabindex="0" data-tip="SIOPE Executivo, 2024, 6º bimestre|entregue, retificado (data original indisponível)|Prazo: 30/01/2025|Data do status: 26/08/2025"><b aria-hidden="true">↺</b> 6º<span class="sr"> retificado</span></span></td><td><span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2025, 1º bimestre|entregue com atraso (171 dias)|Prazo: 30/03/2025|Data do status: 17/09/2025"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +171d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2025, 2º bimestre|entregue com atraso (111 dias)|Prazo: 30/05/2025|Data do status: 18/09/2025"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +111d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2025, 3º bimestre|entregue com atraso (153 dias)|Prazo: 30/07/2025|Data do status: 30/12/2025"><b aria-hidden="true">!</b> 3º<span class="sr"> atraso</span> +153d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2025, 4º bimestre|entregue com atraso (147 dias)|Prazo: 30/09/2025|Data do status: 24/02/2026"><b aria-hidden="true">!</b> 4º<span class="sr"> atraso</span> +147d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2025, 5º bimestre|entregue com atraso (87 dias)|Prazo: 30/11/2025|Data do status: 25/02/2026"><b aria-hidden="true">!</b> 5º<span class="sr"> atraso</span> +87d</span> <span class="chip neutro" tabindex="0" data-tip="SIOPE Executivo, 2025, 6º bimestre|entregue, retificado (data original indisponível)|Prazo: 30/01/2026|Data do status: 11/06/2026"><b aria-hidden="true">↺</b> 6º<span class="sr"> retificado</span></span></td><td><span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2026, 1º bimestre|entregue com atraso (93 dias)|Prazo: 30/03/2026|Data do status: 01/07/2026"><b aria-hidden="true">!</b> 1º<span class="sr"> atraso</span> +93d</span> <span class="chip serious" tabindex="0" data-tip="SIOPE Executivo, 2026, 2º bimestre|entregue com atraso (39 dias)|Prazo: 30/05/2026|Data do status: 08/07/2026"><b aria-hidden="true">!</b> 2º<span class="sr"> atraso</span> +39d</span> <span class="chip critical" tabindex="0" data-tip="SIOPE Executivo, 2026, 3º bimestre|não declarou (116 dias)|Prazo: 30/07/2026"><b aria-hidden="true">✕</b> 3º<span class="sr"> não declarou</span></span> <span class="chip critical" tabindex="0" data-tip="SIOPE Executivo, 2026, 4º bimestre|não declarou (54 dias)|Prazo: 30/09/2026"><b aria-hidden="true">✕</b> 4º<span class="sr"> não declarou</span></span> <span class="chip neutro" tabindex="0" data-tip="SIOPE Executivo, 2026, 5º bimestre|no prazo, ainda não enviado|Prazo: 30/11/2026"><b aria-hidden="true">…</b> 5º<span class="sr"> aguardando</span></span></td></tr></tbody></table></div>
+  <p class="fonte">Fonte: SICONFI/Tesouro Nacional, extrato de entregas (coleta em 24/11/2026); SIOPE/FNDE, Recibos de
+  Transmissão (data em que a última declaração de cada bimestre foi transmitida; quando ela é retificadora, a data original não aparece).
+  Prazos da LRF: RREO e SIOPE, 30 dias após o bimestre; RGF, 30 dias após o quadrimestre; DCA, 30 de abril do ano seguinte.
+  O SICONFI informa só a data do último status: atrasos de 1 ou 2 dias devem ser lidos com cautela.</p>
+</section>
+  <footer class="rodape"><p style="margin:0">Prefeitura em Dia. Dados públicos oficiais, coletados de forma automática; última coleta em 24/11/2026. Nenhum valor é estimado.</p><p style="margin:0">Fontes: <a href="https://apidatalake.tesouro.gov.br/docs/siconfi/">SICONFI (Tesouro Nacional)</a> · <a href="https://www.fnde.gov.br/plataforma-antonieta-de-barros/dados/produtos-de-dados/visualizar/53">SIOPE (FNDE)</a> · <a href="https://cadprev.previdencia.gov.br/">CADPREV</a> · <a href="https://www.gov.br/previdencia/pt-br/assuntos/rpps/estatisticas-e-informacoes-dos-rpps-1/estatisticas-e-informacoes-dos-rpps">Ministério da Previdência</a> · <a href="https://www.diariomunicipal.com.br/famep/">Diário Oficial dos Municípios do Pará</a> · portais das Prefeituras. <a href="metodologia.html">Como funciona</a>.</p></footer>
+</main>
+<script>
+(function(){
+  var tip=document.getElementById('tip');
+  function show(el,x,y){
+    var partes=(el.getAttribute('data-tip')||'').split('|');
+    tip.textContent='';
+    var s=document.createElement('strong');s.textContent=partes[1]||partes[0];tip.appendChild(s);
+    var d=document.createElement('div');d.textContent=partes[0];tip.appendChild(d);
+    for(var i=2;i<partes.length;i++){var p=document.createElement('div');p.textContent=partes[i];tip.appendChild(p);}
+    tip.style.display='block';
+    var w=tip.offsetWidth,h=tip.offsetHeight;
+    tip.style.left=Math.min(window.innerWidth-w-8,Math.max(8,x+12))+'px';
+    tip.style.top=Math.max(8,y-h-12)+'px';
+  }
+  function hide(){tip.style.display='none';}
+  document.querySelectorAll('[data-tip]').forEach(function(el){
+    el.addEventListener('pointermove',function(e){show(el,e.clientX,e.clientY);});
+    el.addEventListener('pointerleave',hide);
+    el.addEventListener('focus',function(){var r=el.getBoundingClientRect();show(el,r.left+r.width/2,r.top);});
+    el.addEventListener('blur',hide);
+  });
+})();
+</script>
+</body>
+</html>
