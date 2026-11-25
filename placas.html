@@ -376,7 +376,8 @@ details.ver-tabela>summary,.card details>summary{font-weight:700;color:var(--ace
 .hb.realce .barra{background:var(--series-2)}
 .hb .valor{color:var(--texto-2);white-space:nowrap;font-size:13px;font-family:var(--f-num)}
 .hb .valor b{color:#fff;font-weight:600}
-@media (max-width:560px){.hb{grid-template-columns:1fr auto}.hb .trilho{grid-column:1 / -1;grid-row:2}}
+.hbarras.largo .hb{grid-template-columns:minmax(150px,320px) 1fr auto}
+@media (max-width:560px){.hb,.hbarras.largo .hb{grid-template-columns:1fr auto}.hb .trilho{grid-column:1 / -1;grid-row:2}}
 /* matriz ano a ano */
 .matriz{border-collapse:separate;border-spacing:6px;width:100%;margin:4px -6px 8px;font-size:14px}
 .matriz th{font-weight:600;color:var(--texto-2);text-align:left;padding:0 4px;border:0}
