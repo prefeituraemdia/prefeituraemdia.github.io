@@ -481,7 +481,7 @@ details.ver-tabela>summary,.card details>summary{font-weight:700;color:var(--ace
   <section class="arrecadometro" aria-label="Arrecadômetro">
   <div class="arrec-grade"><div class="arrec" data-arrec data-meta="205213565.62" data-ano="2026" role="group" aria-label="Arrecadômetro 2026 de Placas">
       <div class="arrec-cab"><span class="arrec-rot"><i aria-hidden="true"></i>Arrecadômetro 2026</span><span class="arrec-muni">Prefeitura de Placas</span></div>
-      <p class="arrec-valor num" data-valor><small>R$</small>184.757.245,83</p>
+      <p class="arrec-valor num" data-valor><small>R$</small>184.758.612,82</p>
       <div class="arrec-trilho" aria-hidden="true"><i style="width:90.032%"></i></div>
       <p class="arrec-pe"><span>Orçamento do ano: <b class="num">R$ 205,2 mi</b></span>
         <span data-pct class="num">90,0% do ano</span>
@@ -870,7 +870,7 @@ details.ver-tabela>summary,.card details>summary{font-weight:700;color:var(--ace
     function passo(){
       var f=Math.min(Math.max((Date.now()-ini)/(fim-ini),0),1);
       val.lastChild.textContent=fmt.format(meta*f);
-      pct.textContent=f>=1?'ano encerrado':(f*100).toFixed(1).replace('.',',')+'% do ano';
+      if(pct)pct.textContent=f>=1?'ano encerrado':(f*100).toFixed(1).replace('.',',')+'% do ano';
       barra.style.width=(f*100).toFixed(3)+'%';
       return f<1;
     }

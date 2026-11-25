@@ -625,7 +625,7 @@ details.ver-tabela>summary,.card details>summary{font-weight:700;color:var(--ace
     function passo(){
       var f=Math.min(Math.max((Date.now()-ini)/(fim-ini),0),1);
       val.lastChild.textContent=fmt.format(meta*f);
-      pct.textContent=f>=1?'ano encerrado':(f*100).toFixed(1).replace('.',',')+'% do ano';
+      if(pct)pct.textContent=f>=1?'ano encerrado':(f*100).toFixed(1).replace('.',',')+'% do ano';
       barra.style.width=(f*100).toFixed(3)+'%';
       return f<1;
     }
