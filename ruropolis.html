@@ -343,6 +343,12 @@ main.conteudo{max-width:none;margin:0;padding:0}
 .lista-abas .ponto.ok{background:var(--ok-pt)} .lista-abas .ponto.atencao{background:var(--at-pt)}
 .lista-abas .ponto.pend{background:var(--pe-pt)} .lista-abas .ponto.diverg{background:var(--di-pt)} .lista-abas .ponto.info{background:var(--in-pt)}
 .abas.mini.js>.lista-abas{display:flex;flex-wrap:wrap;margin:4px 0 12px}
+/* barra principal: no computador as abas quebram linha em vez de sumir na borda; no celular deslizam para o lado,
+   com um esmaecimento na borda indicando que há mais abas */
+@media (min-width:861px){.abas.fixa.js>.lista-abas{flex-wrap:wrap;overflow:visible}
+  .abas.fixa .lista-abas button{font-size:14px;padding:8px 14px}}
+@media (max-width:860px){.abas.fixa.js>.lista-abas{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);
+  mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);padding-right:36px}}
 .abas.mini .lista-abas button{font-size:13px;padding:6px 12px}
 .painel-aba>.titulo-aba{display:none}
 .abas:not(.js) .painel-aba>.titulo-aba{display:block;font-size:24px;font-weight:800;letter-spacing:-.02em;margin:28px 0 8px;color:#fff}
@@ -874,6 +880,9 @@ details.ver-tabela>summary,.card details>summary{font-weight:700;color:var(--ace
     caixa.querySelectorAll(':scope>.lista-abas [role=tab]').forEach(function(t){
       var on=t===aba;t.setAttribute('aria-selected',on?'true':'false');t.tabIndex=on?0:-1;
       document.getElementById(t.getAttribute('aria-controls')).hidden=!on;});
+    var lista=aba.parentElement;  // no celular, traz a aba escolhida para dentro da faixa visível
+    if(lista.scrollWidth>lista.clientWidth){var esq=aba.offsetLeft-lista.offsetLeft;
+      if(esq<lista.scrollLeft||esq+aba.offsetWidth>lista.scrollLeft+lista.clientWidth-36)lista.scrollLeft=esq-16;}
     if(foco)aba.focus();
     if(marcar&&caixa.hasAttribute('data-endereco'))history.replaceState(null,'','#'+aba.getAttribute('aria-controls'));
   }
